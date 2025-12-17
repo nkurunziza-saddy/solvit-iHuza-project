@@ -14,7 +14,7 @@ export const CTA = () => {
           Monitor your iHUZA inventory and product assignments in real-time.
         </span>
         <div className="text-sm mt-4 text-background flex items-center gap-2 py-1.5 w-fit">
-          <CheckCircle className="inline size-4 text-success" />
+          <CheckCircle className="inline size-5 text-success" />
           <span>All systems operational</span>
         </div>
       </div>
