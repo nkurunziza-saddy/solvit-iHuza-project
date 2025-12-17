@@ -82,19 +82,22 @@ export const Users = () => {
   return (
     <SimpleCard title={"Users"} asideText={"Add user"}>
       <table className="w-full text-left">
-        <thead>
+        <thead className="bg-muted uppercase text-muted-foreground">
           <tr className="border-b">
-            <th className="pb-2">User</th>
-            <th className="pb-2">Role</th>
-            <th className="pb-2">Status</th>
-            <th className="pb-2">Last login</th>
-            <th>Actions</th>
+            <th className="px-4 py-2 font-medium">User</th>
+            <th className="px-4 py-2 font-medium">Role</th>
+            <th className="px-4 py-2 font-medium">Status</th>
+            <th className="px-4 py-2 font-medium">Last login</th>
+            <th className="px-4 py-2 font-medium">Actions</th>
           </tr>
         </thead>
         <tbody>
           {USERS.map((user) => (
-            <tr key={user.email} className="border-b hover:bg-gray-100">
-              <td className="py-2">
+            <tr
+              key={user.email}
+              className="border-b last:border-b-0 hover:bg-gray-100"
+            >
+              <td className="py-2 px-4">
                 <div className="flex gap-1.5 items-center">
                   <IconCard icon={UserIcon} variant="default" />
                   <div className="flex flex-col gap-0.5">
@@ -103,16 +106,16 @@ export const Users = () => {
                   </div>
                 </div>
               </td>
-              <td className="py-2">
+              <td className="py-2 px-4">
                 <Badge text={user.role} />
               </td>
-              <td className="py-2">
+              <td className="py-2 px-4">
                 <Badge text={user.status} />
               </td>
-              <td className="py-2">
+              <td className="py-2 px-4">
                 <span className="text-sm text-gray-500">{user.lastLogin}</span>
               </td>
-              <td className="py-2">
+              <td className="py-2 px-4">
                 <a href="#" className="text-sm text-blue-500">
                   Edit
                 </a>

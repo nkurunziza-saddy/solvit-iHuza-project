@@ -10,17 +10,17 @@ const STATS = [
   },
   {
     label: "Total Products",
-    value: "89",
+    value: "100",
     icon: BoxIcon,
   },
   {
     label: "Assigned Products",
-    value: "76",
+    value: "10",
     icon: CheckIcon,
   },
   {
     label: "Unassigned Products",
-    value: "13",
+    value: "90",
     icon: InfoIcon,
   },
 ];

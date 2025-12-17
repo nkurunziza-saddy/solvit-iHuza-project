@@ -3,7 +3,7 @@ import { Badge } from "./badge";
 
 export const ProductCard = ({ name, status, category, date }) => {
   return (
-    <div className="bg-white rounded-lg shadow-sm boorder p-4">
+    <div className="bg-white border rounded-lg shadow-sm boorder p-4">
       <div className="flex justify-between items-center">
         <h5>{name}</h5>
         <Badge text={status} />

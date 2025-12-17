@@ -10,17 +10,17 @@ import { StatSection } from "./components/sections/stat-section";
 function App() {
   return (
     <div className="flex">
-      <div className="w-56 h-screen p-6 border-r">
+      <div className="w-60 h-screen p-4 border-r">
         <Sidebar />
       </div>
       <div className="flex flex-1 flex-col">
         <Navbar />
-        <main className="bg-neutral-50 p-6 flex flex-col gap-6">
+        <main className="bg-neutral-50 p-6 overflow-x-hidden flex flex-col gap-6">
           <CTA />
           <StatSection />
           <RecentlyAddedProducts />
           <Users />
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 items-start sm:grid-cols-2">
             <RecentActivity />
             <QuickActions />
           </div>

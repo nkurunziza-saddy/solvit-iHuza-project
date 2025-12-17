@@ -12,7 +12,7 @@ export const CTA = () => {
         size="lg"
       />
       <div className="flex flex-col gap-0.5">
-        <h5 className="text-xl text-white">
+        <h5 className="text-xl font-medium text-white">
           iHUZA INVENTORY - System Overview
         </h5>
         <span className="text-xs text-white/80">
