@@ -8,10 +8,10 @@ const badgeVariants = cva(
       variant: {
         default: "bg-muted text-muted-foreground",
         primary: "bg-primaryColor-100 text-primaryColor-700",
+        accent: "bg-accent-100 text-accent-700",
         success: "bg-success/8 text-success-foreground",
         warning: "bg-warning/8 text-warning-foreground",
         error: "bg-destructive/8 text-destructive-foreground",
-        purple: "bg-purple-100 text-purple-600",
       },
     },
     defaultVariants: {
@@ -21,7 +21,7 @@ const badgeVariants = cva(
 );
 
 const textToVariant = {
-  Admin: "purple",
+  Admin: "accent",
   Manager: "primary",
   Staff: "default",
   Active: "success",

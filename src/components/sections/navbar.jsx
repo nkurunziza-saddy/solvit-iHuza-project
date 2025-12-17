@@ -35,7 +35,7 @@ export const Navbar = () => {
           <span className="absolute -top-1 -right-1 size-2 bg-destructive rounded-full"></span>
         </div>
         <div className="flex gap-1 items-center ml-2">
-          <span className="mr-2 text-sm hidden lg:block">user@gmail.com</span>
+          <span className="mr-2 text-sm hidden lg:block ">Admin@ihuza.com</span>
           <div className="text-sm bg-primaryColor-500 text-background rounded-full p-2 flex justify-center items-center">
             <UserIcon className="size-4" />
           </div>

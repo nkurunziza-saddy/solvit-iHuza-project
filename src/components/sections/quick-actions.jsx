@@ -15,7 +15,7 @@ const QUICK_ACTIONS = [
     label: "View Products",
     details: "View all registered products",
     icon: Package,
-    variant: "primary",
+    variant: "accent",
   },
   {
     label: "View Assignments",
@@ -27,6 +27,7 @@ const QUICK_ACTIONS = [
 
 const bgVariant = {
   primary: "bg-primaryColor-50",
+  accent: "bg-accent-50",
   success: "bg-success/8",
 };
 
@@ -53,7 +54,7 @@ export const QuickActions = () => {
                 <p className="text-sm text-muted-foreground">{item.details}</p>
               </div>
             </div>
-            <Button variant="default" size="sm" className="py-1">
+            <Button variant={item.variant} size="sm" className="py-1">
               Go
             </Button>
           </div>

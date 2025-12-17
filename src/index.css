@@ -21,6 +21,18 @@
   --color-success-foreground: #16a34a;
   --color-warning: #f59e0b;
   --color-warning-foreground: #d97706;
+  /* Purple accent */
+  --color-accent-50: #faf5ff;
+  --color-accent-100: #f3e8ff;
+  --color-accent-200: #e9d5ff;
+  --color-accent-300: #d8b4fe;
+  --color-accent-400: #c084fc;
+  --color-accent-500: #a855f7;
+  --color-accent-600: #9333ea;
+  --color-accent-700: #7e22ce;
+  --color-accent-800: #6b21a8;
+  --color-accent-900: #581c87;
+  --color-accent-foreground: #ffffff;
 
   /* Primary colors */
   --color-primaryColor-50: #e9effd;
