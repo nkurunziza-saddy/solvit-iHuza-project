@@ -1,8 +1,8 @@
-import React from "react";
-import { Card } from "../card";
-import { Button } from "../button";
+import { Card } from "../base/card";
+import { Button } from "../base/button";
 import { Users, Package, ClipboardCheck } from "lucide-react";
 import { IconCard } from "../icon-card";
+import { cn } from "../../utils";
 
 const QUICK_ACTIONS = [
   {
@@ -15,7 +15,7 @@ const QUICK_ACTIONS = [
     label: "View Products",
     details: "View all registered products",
     icon: Package,
-    variant: "purple",
+    variant: "primary",
   },
   {
     label: "View Assignments",
@@ -25,34 +25,35 @@ const QUICK_ACTIONS = [
   },
 ];
 
-export const QuickActions = () => {
-  const bgVariant = {
-    primary: "bg-blue-50 text-blue-700",
-    purple: "bg-purple-50 text-purple-700",
-    success: "bg-emerald-50 text-emerald-700",
-  };
+const bgVariant = {
+  primary: "bg-primaryColor-50",
+  success: "bg-success/8",
+};
+
+export const QuickActions = ({ children }) => {
   return (
     <Card title={"Quick Actions"} asideText={"View all"}>
       <div className="flex flex-col gap-2">
         {QUICK_ACTIONS.map((item, index) => (
           <div
             key={index}
-            className={`flex ${
+            className={cn(
+              "flex justify-between items-center p-2 rounded-lg transition-colors",
               bgVariant[item.variant]
-            } justify-between items-center p-2 rounded-lg hover:bg-muted/60 transition-colors`}
+            )}
           >
             <div className="flex gap-4 items-center">
-              <IconCard icon={item.icon} variant={item.variant} />
+              <IconCard
+                icon={item.icon}
+                variant={item.variant}
+                className="bg-transparent"
+              />
               <div className="flex flex-col gap-0.5">
-                <h5 className="font-medium text-gray-900">{item.label}</h5>
+                <h5 className="font-medium text-foreground">{item.label}</h5>
                 <p className="text-sm text-muted-foreground">{item.details}</p>
               </div>
             </div>
-            <Button
-              variant="outline"
-              size="sm"
-              className={`${bgVariant[item.variant]}`}
-            >
+            <Button variant="default" size="sm" className="py-1">
               Go
             </Button>
           </div>

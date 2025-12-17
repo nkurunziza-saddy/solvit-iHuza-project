@@ -1,5 +1,4 @@
 import { BoxIcon, CheckIcon, AlertCircleIcon, UserIcon } from "lucide-react";
-import React from "react";
 import { StatCard } from "../stat-card";
 
 const STATS = [
@@ -13,7 +12,7 @@ const STATS = [
     label: "Total Products",
     value: "89",
     icon: BoxIcon,
-    variant: "purple",
+    variant: "primary",
   },
   {
     label: "Assigned Products",

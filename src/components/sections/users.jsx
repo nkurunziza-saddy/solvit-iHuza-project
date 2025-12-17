@@ -1,9 +1,8 @@
-import React from "react";
-import { Button } from "../button";
-import { UserIcon, Pencil, Trash2 } from "lucide-react";
-import { SimpleCard } from "../card";
+import { UserIcon } from "lucide-react";
+import { SimpleCard } from "../base/card";
 import { IconCard } from "../icon-card";
-import { Badge } from "../badge";
+import { Badge } from "../base/badge";
+import { cn } from "../../utils";
 
 const USERS = [
   {
@@ -81,7 +80,7 @@ const USERS = [
 export const Users = () => {
   return (
     <SimpleCard title={"Users"} asideText={"Add user"}>
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto min-w-0">
         <table className="w-full text-left">
           <thead>
             <tr className="border-b bg-muted/80">
@@ -106,13 +105,20 @@ export const Users = () => {
             {USERS.map((user) => (
               <tr
                 key={user.email}
-                className="border-b hover:bg-muted/60 transition-colors"
+                className={cn(
+                  "border-b transition-colors",
+                  "hover:bg-muted/60"
+                )}
               >
                 <td className="px-4 py-3">
                   <div className="flex gap-3 items-center">
-                    <IconCard icon={UserIcon} variant="default" />
+                    <IconCard
+                      icon={UserIcon}
+                      variant="default"
+                      className="rounded-full"
+                    />
                     <div className="flex flex-col gap-0.5">
-                      <span className="font-medium text-gray-900">
+                      <span className="font-medium text-foreground">
                         {user.name}
                       </span>
                       <span className="text-xs text-muted-foreground">
@@ -133,11 +139,21 @@ export const Users = () => {
                   </span>
                 </td>
                 <td className="px-4 py-3">
-                  <div className="flex items-center gap-2">
-                    <button className="p-1.5 rounded-md text-blue-600 transition-colors">
+                  <div className="flex items-center gap-2 *:text-sm">
+                    <button
+                      className={cn(
+                        "p-1.5 rounded-md transition-colors",
+                        "text-primaryColor-400"
+                      )}
+                    >
                       Edit
                     </button>
-                    <button className="p-1.5 rounded-md text-rose-600 transition-colors">
+                    <button
+                      className={cn(
+                        "p-1.5 rounded-md transition-colors",
+                        "text-destructive"
+                      )}
+                    >
                       Delete
                     </button>
                   </div>

@@ -1,37 +1,52 @@
-import React from "react";
+import { cva } from "class-variance-authority";
+import { cn } from "../utils";
+
+const iconCardVariants = cva("flex rounded-lg justify-center items-center", {
+  variants: {
+    variant: {
+      default: "bg-muted text-muted-foreground",
+      primary: "bg-primaryColor-100 text-primaryColor-600",
+      success: "bg-success/16 text-success-foreground",
+      warning: "bg-warning/16 text-warning-foreground",
+      error: "bg-destructive/16 text-destructive-foreground",
+      ghost: "bg-transparent text-muted-foreground",
+      "primary-inverse": "bg-primaryColor-500 text-background",
+    },
+    size: {
+      sm: "size-6 p-1",
+      md: "size-8 p-1.5",
+      lg: "size-10 p-2",
+    },
+    type: {
+      filled: "",
+      outline: "border-none bg-transparent",
+    },
+  },
+  defaultVariants: {
+    variant: "default",
+    size: "md",
+    type: "filled",
+  },
+});
+
+const iconSizeMap = {
+  sm: "size-3",
+  md: "size-4",
+  lg: "size-5",
+};
 
 export const IconCard = ({
   icon: Icon,
-  variant = "default",
+  variant,
   size = "md",
-  type = "filled",
+  type,
   className,
 }) => {
-  const variants = {
-    default: "bg-gray-100 text-gray-700",
-    primary: "bg-blue-100 text-blue-700",
-    purple: "bg-purple-100 text-purple-700",
-    secondary: "bg-purple-100 text-purple-700",
-    success: "bg-emerald-100 text-emerald-700",
-    warning: "bg-amber-100 text-amber-700",
-    error: "bg-rose-100 text-rose-700",
-    cyan: "bg-cyan-100 text-cyan-700",
-    ghost: "bg-transparent text-gray-600",
-  };
-  const sizes = {
-    sm: "size-6",
-    md: "size-8",
-    lg: "size-10",
-  };
-  const types = {
-    outline: "border-none bg-transparent",
-    filled: "",
-  };
   return (
-    <div
-      className={`flex rounded-lg justify-center items-center p-2 ${variants[variant]} ${sizes[size]} ${types[type]} ${className}`}
-    >
-      <Icon className="size-4" />
+    <div className={cn(iconCardVariants({ variant, size, type, className }))}>
+      <Icon className={iconSizeMap[size]} />
     </div>
   );
 };
+
+export { iconCardVariants };

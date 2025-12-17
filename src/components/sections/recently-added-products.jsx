@@ -1,4 +1,4 @@
-import { Card } from "../card";
+import { Card } from "../base/card";
 import { ProductCard } from "../product-card";
 
 const RECENTLY_ADDED_PRODUCTS = [

@@ -1,7 +1,7 @@
-import React from "react";
-import { Card } from "../card";
+import { Card } from "../base/card";
 import { BoxIcon, AlertTriangleIcon, UserPlusIcon } from "lucide-react";
 import { IconCard } from "../icon-card";
+import { cn } from "../../utils";
 
 const ACTIVITIES = [
   {
@@ -37,7 +37,7 @@ const ACTIVITIES = [
     details: "Amanda White Staff Member",
     date: "Jan 14, 2024",
     icon: UserPlusIcon,
-    statusType: "purple",
+    statusType: "primary",
   },
 ];
 
@@ -48,11 +48,14 @@ export const RecentActivity = () => {
         {ACTIVITIES.map((activity, index) => (
           <div
             key={index}
-            className="py-3 flex gap-4 items-start hover:bg-muted/60 rounded-lg px-2 transition-colors"
+            className={cn(
+              "py-3 flex gap-4 items-start rounded-lg px-2 transition-colors",
+              "hover:bg-muted/60"
+            )}
           >
             <IconCard icon={activity.icon} variant={activity.statusType} />
             <div className="flex flex-col gap-1 flex-1">
-              <h5 className="font-medium text-gray-900">{activity.label}</h5>
+              <h5 className="font-medium text-foreground">{activity.label}</h5>
               <p className="text-sm text-muted-foreground">
                 {activity.details}
               </p>
