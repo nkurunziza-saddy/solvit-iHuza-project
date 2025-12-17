@@ -77,7 +77,7 @@ const USERS = [
   },
 ];
 
-export const Users = () => {
+export const UsersTable = () => {
   return (
     <SimpleCard title={"Users"} asideText={"Add user"}>
       <div className="overflow-x-auto min-w-0">

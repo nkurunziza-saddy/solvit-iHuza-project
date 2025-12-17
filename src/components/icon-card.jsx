@@ -5,7 +5,7 @@ const iconCardVariants = cva("flex rounded-lg justify-center items-center", {
   variants: {
     variant: {
       default: "bg-muted text-muted-foreground",
-      primary: "bg-primaryColor-100 text-primaryColor-600",
+      primary: "bg-primaryColor-50 text-primaryColor-600",
       success: "bg-success/16 text-success-foreground",
       warning: "bg-warning/16 text-warning-foreground",
       error: "bg-destructive/16 text-destructive-foreground",

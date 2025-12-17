@@ -57,8 +57,8 @@ export const Sidebar = () => {
               className={cn(
                 "p-2 cursor-pointer flex justify-between items-center rounded transition-colors",
                 page.isActive
-                  ? "bg-primaryColor-200/20 text-primaryColor-500"
-                  : "hover:bg-primaryColor-100/20"
+                  ? "bg-primaryColor-50 text-primaryColor-500"
+                  : "hover:bg-primaryColor-50/20"
               )}
             >
               <div className="flex text-sm items-center gap-1">
@@ -122,8 +122,8 @@ export function MobileSidebar({ open, setOpen }) {
               className={cn(
                 "p-2 cursor-pointer flex justify-between items-center rounded transition-colors",
                 page.isActive
-                  ? "bg-primaryColor-200/20 text-primaryColor-500"
-                  : "hover:bg-primaryColor-100/20"
+                  ? "bg-primaryColor-50 text-primaryColor-500"
+                  : "hover:bg-primaryColor-50/20"
               )}
             >
               <div className="flex text-sm items-center gap-1">

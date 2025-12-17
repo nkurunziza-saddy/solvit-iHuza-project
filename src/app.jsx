@@ -2,10 +2,10 @@ import { Sidebar } from "./components/sections/sidebar";
 import { Navbar } from "./components/sections/navbar";
 import { CTA } from "./components/sections/cta";
 import { RecentlyAddedProducts } from "./components/sections/recently-added-products";
-import { Users } from "./components/sections/users";
 import { RecentActivity } from "./components/sections/recent-activity";
 import { QuickActions } from "./components/sections/quick-actions";
 import { StatSection } from "./components/sections/stat-section";
+import { UsersTable } from "./components/sections/users-table";
 
 function App() {
   return (
@@ -25,7 +25,7 @@ function App() {
           <CTA />
           <StatSection />
           <RecentlyAddedProducts />
-          <Users />
+          <UsersTable />
           <div className="grid grid-cols-1 gap-4 items-start lg:grid-cols-2">
             <RecentActivity />
             <QuickActions />
