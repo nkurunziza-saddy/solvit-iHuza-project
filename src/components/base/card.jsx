@@ -1,25 +1,14 @@
-import { cva } from "class-variance-authority";
 import { Button } from "./button";
 import { cn } from "../../utils";
 
-const cardVariants = cva(
-  "border bg-background rounded-xl shadow-sm overflow-hidden min-w-0",
-  {
-    variants: {
-      variant: {
-        default: "",
-        elevated: "shadow-md",
-      },
-    },
-    defaultVariants: {
-      variant: "default",
-    },
-  }
-);
-
-export const Card = ({ children, title, asideText, variant, className }) => {
+export const Card = ({ children, title, asideText, className }) => {
   return (
-    <div className={cn(cardVariants({ variant, className }))}>
+    <div
+      className={cn(
+        "border bg-background rounded-xl shadow-sm overflow-hidden min-w-0",
+        className
+      )}
+    >
       <div className="border-b flex justify-between px-5 py-4 items-center">
         {title && <h4 className="font-semibold text-foreground">{title}</h4>}
         {asideText && (
@@ -33,15 +22,14 @@ export const Card = ({ children, title, asideText, variant, className }) => {
   );
 };
 
-export const SimpleCard = ({
-  children,
-  title,
-  asideText,
-  variant,
-  className,
-}) => {
+export const SimpleCard = ({ children, title, asideText, className }) => {
   return (
-    <div className={cn(cardVariants({ variant, className }))}>
+    <div
+      className={cn(
+        "border bg-background rounded-xl shadow-sm overflow-hidden min-w-0",
+        className
+      )}
+    >
       <div className="flex justify-between px-5 py-4 items-center border-b">
         {title && <h4 className="font-semibold text-foreground">{title}</h4>}
         {asideText && <Button size="sm">{asideText}</Button>}
