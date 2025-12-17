@@ -12,10 +12,9 @@ const buttonVariants = cva(
           "bg-primaryColor-500 text-background hover:bg-primaryColor-600 shadow-sm",
         accent:
           "bg-accent-500 text-accent-foreground hover:bg-accent-600 shadow-sm",
-        secondary: "bg-muted text-foreground hover:bg-muted/80",
         outline: "border border-border bg-transparent hover:bg-muted/50",
         ghost: "text-foreground hover:bg-muted/50",
-        link: "text-primaryColor-400 underline hover:text-primaryColor-600",
+        link: "text-primaryColor-400 underline hover:text-primaryColor-600 px-0",
         danger:
           "bg-destructive text-background hover:bg-destructive/90 shadow-sm",
         success: "bg-success text-background hover:bg-success/90 shadow-sm",

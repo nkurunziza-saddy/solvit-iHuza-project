@@ -49,5 +49,3 @@ export const IconCard = ({
     </div>
   );
 };
-
-export { iconCardVariants };
