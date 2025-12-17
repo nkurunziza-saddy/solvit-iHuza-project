@@ -9,7 +9,6 @@ import {
 } from "lucide-react";
 import { IconCard } from "../icon-card";
 import { cn } from "../../utils";
-import { useState } from "react";
 
 export const PAGES = [
   {

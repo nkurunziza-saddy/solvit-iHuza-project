@@ -15,42 +15,24 @@
   --color-muted-foreground: oklch(0.556 0 0);
 
   /* Semantic colors */
-  --color-destructive: oklch(0.704 0.191 22.216);
-  --color-destructive-foreground: oklch(0.704 0.191 22.216);
-  --color-success: oklch(0.696 0.17 162.48);
-  --color-success-foreground: oklch(0.765 0.177 163.223);
-  --color-warning: oklch(0.769 0.188 70.08);
-  --color-warning-foreground: oklch(0.828 0.189 84.429);
+  --color-destructive: #ef4444;
+  --color-destructive-foreground: #dc2626;
+  --color-success: #22c55e;
+  --color-success-foreground: #16a34a;
+  --color-warning: #f59e0b;
+  --color-warning-foreground: #d97706;
 
   /* Primary colors */
-  --color-primaryColor-50: #e9effd; /* rgb(233, 239, 253) */
-  --color-primaryColor-100: #bbcff9; /* rgb(187, 207, 249) */
-  --color-primaryColor-200: #9bb7f6; /* rgb(155, 183, 246) */
-  --color-primaryColor-300: #6d96f2; /* rgb(109, 150, 242) */
-  --color-primaryColor-400: #5182ef; /* rgb(81, 130, 239) */
-  --color-primaryColor-500: #2563eb; /* rgb(37, 99, 235) */
-  --color-primaryColor-600: #225ad6; /* rgb(34, 90, 214) */
-  --color-primaryColor-700: #1a46a7; /* rgb(26, 70, 167) */
-  --color-primaryColor-800: #143681; /* rgb(20, 54, 129) */
-  --color-primaryColor-900: #102a63; /* rgb(16, 42, 99) */
-
-  /* custom text Sizes */
-  --text-sm: 14px;
-  --text-base: 24px;
-  --text-headline: 32px;
-  --text-title: 40px;
-
-  --text-lg: 1.125rem; /* 18px */
-  --text-lg--line-height: calc(1.75 / 1.125);
-
-  --text-xl: 1.25rem; /* 20px */
-  --text-xl--line-height: calc(1.75 / 1.25);
-
-  --text-2xl: 1.5rem; /* 24px */
-  --text-2xl--line-height: calc(2 / 1.5);
-
-  --text-3xl: 1.875rem; /* 30px */
-  --text-3xl--line-height: calc(2.25 / 1.875);
+  --color-primaryColor-50: #e9effd;
+  --color-primaryColor-100: #bbcff9;
+  --color-primaryColor-200: #9bb7f6;
+  --color-primaryColor-300: #6d96f2;
+  --color-primaryColor-400: #5182ef;
+  --color-primaryColor-500: #2563eb;
+  --color-primaryColor-600: #225ad6;
+  --color-primaryColor-700: #1a46a7;
+  --color-primaryColor-800: #143681;
+  --color-primaryColor-900: #102a63;
 
   --shadow-2xs: 0 1px rgb(0 0 0 / 0.03);
   --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.03);

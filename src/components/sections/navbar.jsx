@@ -5,7 +5,6 @@ import {
   SettingsIcon,
   UserIcon,
 } from "lucide-react";
-import { cn } from "../../utils";
 import { MobileSidebar } from "./sidebar";
 import { useState } from "react";
 

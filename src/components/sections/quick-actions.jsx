@@ -30,7 +30,7 @@ const bgVariant = {
   success: "bg-success/8",
 };
 
-export const QuickActions = ({ children }) => {
+export const QuickActions = () => {
   return (
     <Card title={"Quick Actions"} asideText={"View all"}>
       <div className="flex flex-col gap-2">
