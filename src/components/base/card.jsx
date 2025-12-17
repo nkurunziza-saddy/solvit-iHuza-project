@@ -50,5 +50,3 @@ export const SimpleCard = ({
     </div>
   );
 };
-
-export { cardVariants };

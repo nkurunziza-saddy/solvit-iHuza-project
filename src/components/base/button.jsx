@@ -43,5 +43,3 @@ export const Button = ({ variant, size, className, children, ...props }) => {
     </button>
   );
 };
-
-export { buttonVariants };
