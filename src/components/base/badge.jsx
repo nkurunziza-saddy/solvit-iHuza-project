@@ -40,5 +40,3 @@ export const Badge = ({ variant = "default", text, className }) => {
     </div>
   );
 };
-
-export { badgeVariants };
