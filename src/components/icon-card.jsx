@@ -8,12 +8,14 @@ export const IconCard = ({
   className,
 }) => {
   const variants = {
-    default: "bg-gray-100 text-gray-800",
-    primary: "bg-blue-100 text-blue-800",
-    secondary: "bg-purple-100 text-purple-800",
-    success: "bg-green-100 text-green-800",
-    warning: "bg-yellow-100 text-yellow-800",
-    error: "bg-red-100 text-red-800",
+    default: "bg-gray-100 text-gray-700",
+    primary: "bg-blue-100 text-blue-700",
+    purple: "bg-purple-100 text-purple-700",
+    secondary: "bg-purple-100 text-purple-700",
+    success: "bg-emerald-100 text-emerald-700",
+    warning: "bg-amber-100 text-amber-700",
+    error: "bg-rose-100 text-rose-700",
+    cyan: "bg-cyan-100 text-cyan-700",
     ghost: "bg-transparent text-gray-600",
   };
   const sizes = {

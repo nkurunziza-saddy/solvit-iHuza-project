@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "../button";
-import { UserIcon } from "lucide-react";
+import { UserIcon, Pencil, Trash2 } from "lucide-react";
 import { SimpleCard } from "../card";
 import { IconCard } from "../icon-card";
 import { Badge } from "../badge";
@@ -81,52 +81,72 @@ const USERS = [
 export const Users = () => {
   return (
     <SimpleCard title={"Users"} asideText={"Add user"}>
-      <table className="w-full text-left">
-        <thead className="bg-muted uppercase text-muted-foreground">
-          <tr className="border-b">
-            <th className="px-4 py-2 font-medium">User</th>
-            <th className="px-4 py-2 font-medium">Role</th>
-            <th className="px-4 py-2 font-medium">Status</th>
-            <th className="px-4 py-2 font-medium">Last login</th>
-            <th className="px-4 py-2 font-medium">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {USERS.map((user) => (
-            <tr
-              key={user.email}
-              className="border-b last:border-b-0 hover:bg-gray-100"
-            >
-              <td className="py-2 px-4">
-                <div className="flex gap-1.5 items-center">
-                  <IconCard icon={UserIcon} variant="default" />
-                  <div className="flex flex-col gap-0.5">
-                    <span className="font-medium">{user.name}</span>
-                    <span className="text-xs text-gray-500">{user.email}</span>
-                  </div>
-                </div>
-              </td>
-              <td className="py-2 px-4">
-                <Badge text={user.role} />
-              </td>
-              <td className="py-2 px-4">
-                <Badge text={user.status} />
-              </td>
-              <td className="py-2 px-4">
-                <span className="text-sm text-gray-500">{user.lastLogin}</span>
-              </td>
-              <td className="py-2 px-4">
-                <a href="#" className="text-sm text-blue-500">
-                  Edit
-                </a>
-                <a href="#" className="ml-4 text-sm text-red-500">
-                  Delete
-                </a>
-              </td>
+      <div className="overflow-x-auto">
+        <table className="w-full text-left">
+          <thead>
+            <tr className="border-b bg-muted/80">
+              <th className="px-4 py-3 text-sm font-medium text-muted-foreground/90">
+                User
+              </th>
+              <th className="px-4 py-3 text-sm font-medium text-muted-foreground/90">
+                Role
+              </th>
+              <th className="px-4 py-3 text-sm font-medium text-muted-foreground/90">
+                Status
+              </th>
+              <th className="px-4 py-3 text-sm font-medium text-muted-foreground/90">
+                Last login
+              </th>
+              <th className="px-4 py-3 text-sm font-medium text-muted-foreground/90">
+                Actions
+              </th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {USERS.map((user) => (
+              <tr
+                key={user.email}
+                className="border-b hover:bg-muted/60 transition-colors"
+              >
+                <td className="px-4 py-3">
+                  <div className="flex gap-3 items-center">
+                    <IconCard icon={UserIcon} variant="default" />
+                    <div className="flex flex-col gap-0.5">
+                      <span className="font-medium text-gray-900">
+                        {user.name}
+                      </span>
+                      <span className="text-xs text-muted-foreground">
+                        {user.email}
+                      </span>
+                    </div>
+                  </div>
+                </td>
+                <td className="px-4 py-3">
+                  <Badge text={user.role} />
+                </td>
+                <td className="px-4 py-3">
+                  <Badge text={user.status} />
+                </td>
+                <td className="px-4 py-3">
+                  <span className="text-sm text-muted-foreground">
+                    {user.lastLogin}
+                  </span>
+                </td>
+                <td className="px-4 py-3">
+                  <div className="flex items-center gap-2">
+                    <button className="p-1.5 rounded-md text-blue-600 transition-colors">
+                      Edit
+                    </button>
+                    <button className="p-1.5 rounded-md text-rose-600 transition-colors">
+                      Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </SimpleCard>
   );
 };

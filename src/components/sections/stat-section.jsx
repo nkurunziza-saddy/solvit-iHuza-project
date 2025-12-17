@@ -1,4 +1,4 @@
-import { BoxIcon, CheckIcon, InfoIcon, UserIcon } from "lucide-react";
+import { BoxIcon, CheckIcon, AlertCircleIcon, UserIcon } from "lucide-react";
 import React from "react";
 import { StatCard } from "../stat-card";
 
@@ -7,21 +7,25 @@ const STATS = [
     label: "Total Users",
     value: "116",
     icon: UserIcon,
+    variant: "primary",
   },
   {
     label: "Total Products",
-    value: "100",
+    value: "89",
     icon: BoxIcon,
+    variant: "purple",
   },
   {
     label: "Assigned Products",
-    value: "10",
+    value: "76",
     icon: CheckIcon,
+    variant: "success",
   },
   {
     label: "Unassigned Products",
-    value: "90",
-    icon: InfoIcon,
+    value: "13",
+    icon: AlertCircleIcon,
+    variant: "warning",
   },
 ];
 
