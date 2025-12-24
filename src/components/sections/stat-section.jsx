@@ -1,37 +1,41 @@
-import { BoxIcon, CheckIcon, AlertCircleIcon, UserIcon } from "lucide-react";
+import { BoxIcon, Layers, AlertTriangleIcon, UserIcon } from "lucide-react";
 import { StatCard } from "../stat-card";
-
-const STATS = [
-  {
-    label: "Total Users",
-    value: "116",
-    icon: UserIcon,
-    variant: "primary",
-  },
-  {
-    label: "Total Products",
-    value: "89",
-    icon: BoxIcon,
-    variant: "primary",
-  },
-  {
-    label: "Assigned Products",
-    value: "76",
-    icon: CheckIcon,
-    variant: "success",
-  },
-  {
-    label: "Unassigned Products",
-    value: "13",
-    icon: AlertCircleIcon,
-    variant: "warning",
-  },
-];
+import { useData } from "../../contexts/data-context";
 
 export const StatSection = () => {
+  const { getStats } = useData();
+  const stats = getStats();
+
+  const statItems = [
+    {
+      label: "Total Users",
+      value: String(stats.totalUsers),
+      icon: UserIcon,
+      variant: "primary",
+    },
+    {
+      label: "Total Products",
+      value: String(stats.totalProducts),
+      icon: BoxIcon,
+      variant: "primary",
+    },
+    {
+      label: "Categories",
+      value: String(stats.totalCategories),
+      icon: Layers,
+      variant: "accent",
+    },
+    {
+      label: "Low Stock Alert",
+      value: String(stats.lowStockProducts + stats.outOfStockProducts),
+      icon: AlertTriangleIcon,
+      variant: "warning",
+    },
+  ];
+
   return (
-    <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
-      {STATS.map((stat) => (
+    <div className="grid gap-4 md:gap-6 grid-cols-2 lg:grid-cols-4">
+      {statItems.map((stat) => (
         <StatCard key={stat.label} {...stat} />
       ))}
     </div>

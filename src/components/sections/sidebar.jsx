@@ -7,37 +7,48 @@ import {
   LogOut,
   X,
 } from "lucide-react";
+import { NavLink, useNavigate } from "react-router-dom";
 import { IconCard } from "../icon-card";
 import { cn } from "../../utils";
+import { useAuth } from "../../contexts/auth-context";
 
-export const PAGES = [
+const getNavItems = (isAdmin) => [
   {
     label: "Dashboard",
     icon: Computer,
-    isActive: true,
+    path: "/dashboard",
   },
-  {
-    label: "Users",
-    icon: UserIcon,
-    count: 116,
-  },
+  ...(isAdmin
+    ? [
+        {
+          label: "Users",
+          icon: UserIcon,
+          path: "/users",
+        },
+      ]
+    : []),
   {
     label: "Products",
     icon: BoxIcon,
-    count: 100,
-  },
-  {
-    label: "Assignments",
-    icon: Book,
-    count: 10,
+    path: "/products",
   },
   {
     label: "Categories",
     icon: Layers,
+    path: "/categories",
   },
 ];
 
 export const Sidebar = () => {
+  const { isAdmin, logout } = useAuth();
+  const navigate = useNavigate();
+  const navItems = getNavItems(isAdmin);
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
+
   return (
     <div className="h-full flex flex-col">
       <div className="flex gap-2 items-center justify-between">
@@ -50,43 +61,48 @@ export const Sidebar = () => {
         </div>
       </div>
       <nav className="mt-6 flex-1 flex flex-col justify-between">
-        <ul className="flex flex-col gap-2">
-          {PAGES.map((page, index) => (
-            <li
-              key={index}
-              className={cn(
-                "p-2 cursor-pointer flex justify-between items-center rounded transition-colors",
-                page.isActive
-                  ? "bg-primaryColor-50 text-primaryColor-500"
-                  : "hover:bg-primaryColor-50/20"
-              )}
-            >
-              <div className="flex text-sm items-center gap-1">
-                {page.icon && (
-                  <page.icon
-                    className={cn(
-                      "inline size-3.5 mr-2 text-muted-foreground",
-                      page.isActive && "text-primaryColor-500"
-                    )}
-                  />
+        <ul className="flex flex-col gap-1">
+          {navItems.map((item) => (
+            <li key={item.path}>
+              <NavLink
+                to={item.path}
+                className={({ isActive }) =>
+                  cn(
+                    "p-2.5 cursor-pointer flex justify-between items-center rounded-lg transition-colors",
+                    isActive
+                      ? "bg-primaryColor-500 text-white shadow-sm"
+                      : "hover:bg-muted text-foreground"
+                  )
+                }
+              >
+                {({ isActive }) => (
+                  <>
+                    <div className="flex text-sm items-center gap-2">
+                      <item.icon
+                        className={cn(
+                          "size-4",
+                          isActive ? "text-white" : "text-muted-foreground"
+                        )}
+                      />
+                      <span className="font-medium">{item.label}</span>
+                    </div>
+                  </>
                 )}
-                {page.label}
-              </div>
-              {page.count && (
-                <div className="text-xs bg-muted text-muted-foreground rounded-full px-1.5 py-0.5">
-                  {page.count}
-                </div>
-              )}
+              </NavLink>
             </li>
           ))}
         </ul>
         <div className="mt-auto">
-          <div className="cursor-pointer p-2 flex justify-between items-center rounded hover:bg-muted/60 transition-colors">
-            <div className="flex text-sm items-center gap-1 text-muted-foreground">
-              <LogOut className="inline size-3.5 mr-2" />
-              Logout
+          <button
+            onClick={handleLogout}
+            type="button"
+            className="w-full cursor-pointer p-2.5 flex justify-between items-center rounded-lg hover:bg-destructive/10 transition-colors"
+          >
+            <div className="flex text-sm items-center gap-2 text-destructive">
+              <LogOut className="size-4" />
+              <span className="font-medium">Logout</span>
             </div>
-          </div>
+          </button>
         </div>
       </nav>
     </div>
@@ -94,9 +110,24 @@ export const Sidebar = () => {
 };
 
 export function MobileSidebar({ open, setOpen }) {
+  const { isAdmin, logout } = useAuth();
+  const navigate = useNavigate();
+  const navItems = getNavItems(isAdmin);
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+    setOpen(false);
+  };
+
+  const handleNavClick = () => {
+    setOpen(false);
+  };
+
   if (!open) return null;
+
   return (
-    <div className="fixed sm:hidden top-0 right-0 left-0 w-dvw overflow-x-hidden z-40 h-screen bg-background p-4">
+    <div className="fixed md:hidden top-0 right-0 left-0 w-dvw overflow-x-hidden z-50 h-screen bg-background p-4">
       <div className="flex gap-2 items-center justify-between">
         <div className="flex gap-2 items-center">
           <IconCard icon={BoxIcon} variant="primary-inverse" />
@@ -105,53 +136,58 @@ export function MobileSidebar({ open, setOpen }) {
             <span className="text-xs text-muted-foreground">Inventory</span>
           </div>
         </div>
-      </div>
-      {open && (
         <button
           onClick={() => setOpen(false)}
-          className="absolute top-4 right-4 p-2 hover:bg-muted rounded-lg"
+          type="button"
+          className="p-2 hover:bg-muted rounded-lg"
         >
-          <X className="size-4" />
+          <X className="size-5" />
         </button>
-      )}
+      </div>
       <nav className="mt-6 h-[calc(100vh-6rem)] flex-1 flex flex-col justify-between">
-        <ul className="flex flex-col gap-2">
-          {PAGES.map((page, index) => (
-            <li
-              key={index}
-              className={cn(
-                "p-2 cursor-pointer flex justify-between items-center rounded transition-colors",
-                page.isActive
-                  ? "bg-primaryColor-50 text-primaryColor-500"
-                  : "hover:bg-primaryColor-50/20"
-              )}
-            >
-              <div className="flex text-sm items-center gap-1">
-                {page.icon && (
-                  <page.icon
-                    className={cn(
-                      "inline size-3.5 mr-2 text-muted-foreground",
-                      page.isActive && "text-primaryColor-500"
-                    )}
-                  />
+        <ul className="flex flex-col gap-1">
+          {navItems.map((item) => (
+            <li key={item.path}>
+              <NavLink
+                to={item.path}
+                onClick={handleNavClick}
+                className={({ isActive }) =>
+                  cn(
+                    "p-3 cursor-pointer flex justify-between items-center rounded-lg transition-colors",
+                    isActive
+                      ? "bg-primaryColor-500 text-white shadow-sm"
+                      : "hover:bg-muted text-foreground"
+                  )
+                }
+              >
+                {({ isActive }) => (
+                  <>
+                    <div className="flex text-sm items-center gap-2">
+                      <item.icon
+                        className={cn(
+                          "size-4",
+                          isActive ? "text-white" : "text-muted-foreground"
+                        )}
+                      />
+                      <span className="font-medium">{item.label}</span>
+                    </div>
+                  </>
                 )}
-                {page.label}
-              </div>
-              {page.count && (
-                <div className="text-xs bg-muted text-muted-foreground rounded-full px-1.5 py-0.5">
-                  {page.count}
-                </div>
-              )}
+              </NavLink>
             </li>
           ))}
         </ul>
         <div className="mt-auto">
-          <div className="cursor-pointer p-2 flex justify-between items-center rounded hover:bg-muted/60 transition-colors">
-            <div className="flex text-sm items-center gap-1 text-muted-foreground">
-              <LogOut className="inline size-3.5 mr-2" />
-              Logout
+          <button
+            onClick={handleLogout}
+            type="button"
+            className="w-full cursor-pointer p-3 flex justify-between items-center rounded-lg hover:bg-destructive/10 transition-colors"
+          >
+            <div className="flex text-sm items-center gap-2 text-destructive">
+              <LogOut className="size-4" />
+              <span className="font-medium">Logout</span>
             </div>
-          </div>
+          </button>
         </div>
       </nav>
     </div>

@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
 
 @theme {
@@ -7,12 +7,15 @@
   --breakpoint-large: 1000px;
   --breakpoint-desktop: 1200px;
 
-  /* Core colors */
+  /* Core colors - Light Mode */
   --color-background: #ffffff;
   --color-foreground: #0f172a;
   --color-border: #e5e7eb;
   --color-muted: oklch(0.97 0 0);
   --color-muted-foreground: oklch(0.556 0 0);
+  --color-card: #ffffff;
+  --color-input: #ffffff;
+  --color-ring: #2563eb;
 
   /* Semantic colors */
   --color-destructive: #ef4444;
@@ -21,6 +24,7 @@
   --color-success-foreground: #16a34a;
   --color-warning: #f59e0b;
   --color-warning-foreground: #d97706;
+
   /* Purple accent */
   --color-accent-50: #faf5ff;
   --color-accent-100: #f3e8ff;
@@ -66,6 +70,23 @@
   --inset-shadow-lg: inset 0 8px 16px rgb(0 0 0 / 0.08);
 }
 
+.dark {
+  --color-background: #0f172a;
+  --color-foreground: #f1f5f9;
+  --color-border: #334155;
+  --color-muted: #1e293b;
+  --color-muted-foreground: #94a3b8;
+  --color-card: #1e293b;
+  --color-input: #1e293b;
+  --color-ring: #3b82f6;
+
+  --color-primaryColor-50: #1e3a5f;
+  --color-primaryColor-100: #1e40af;
+
+  --color-accent-50: #2e1065;
+  --color-accent-100: #3b0764;
+}
+
 @layer base {
   * {
     @apply border-border outline-border/50;
@@ -76,7 +97,7 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground transition-colors duration-300;
     font-family: "Poppins", sans-serif;
   }
 
@@ -99,13 +120,13 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-muted/60 rounded-xs;
+    @apply bg-muted-foreground/30 rounded-xs;
   }
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-muted/80;
+    @apply bg-muted-foreground/50;
   }
   ::-webkit-scrollbar-thumb:active {
-    @apply bg-muted;
+    @apply bg-muted-foreground/70;
   }
 }
 
