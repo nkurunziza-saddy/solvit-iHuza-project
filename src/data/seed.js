@@ -6,8 +6,8 @@ export const INITIAL_USERS = [
     password: "admin123",
     role: "Admin",
     status: "Active",
-    createdAt: "2024-01-01T00:00:00Z",
-    lastLogin: "2 hours ago",
+    createdAt: new Date("2024-01-01").toISOString(),
+    lastLogin: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
   },
   {
     id: "2",
@@ -16,8 +16,8 @@ export const INITIAL_USERS = [
     password: "john123",
     role: "Manager",
     status: "Active",
-    createdAt: "2024-02-15T00:00:00Z",
-    lastLogin: "5 hours ago",
+    createdAt: new Date("2024-02-15").toISOString(),
+    lastLogin: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(),
   },
   {
     id: "3",
@@ -26,8 +26,8 @@ export const INITIAL_USERS = [
     password: "sarah123",
     role: "Staff",
     status: "Active",
-    createdAt: "2024-03-20T00:00:00Z",
-    lastLogin: "1 day ago",
+    createdAt: new Date("2024-03-20").toISOString(),
+    lastLogin: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
   },
   {
     id: "4",
@@ -36,8 +36,8 @@ export const INITIAL_USERS = [
     password: "michael123",
     role: "Staff",
     status: "Inactive",
-    createdAt: "2024-04-10T00:00:00Z",
-    lastLogin: "3 days ago",
+    createdAt: new Date("2024-04-10").toISOString(),
+    lastLogin: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
   },
 ];
 
@@ -46,31 +46,31 @@ export const INITIAL_CATEGORIES = [
     id: "1",
     name: "Laptops",
     description: "Portable computers including notebooks and ultrabooks",
-    createdAt: "2024-01-01T00:00:00Z",
+    createdAt: new Date("2024-01-01").toISOString(),
   },
   {
     id: "2",
     name: "Mobile Devices",
     description: "Smartphones, tablets, and mobile accessories",
-    createdAt: "2024-01-01T00:00:00Z",
+    createdAt: new Date("2024-01-01").toISOString(),
   },
   {
     id: "3",
     name: "Tablets",
     description: "Tablet computers and e-readers",
-    createdAt: "2024-01-01T00:00:00Z",
+    createdAt: new Date("2024-01-01").toISOString(),
   },
   {
     id: "4",
     name: "Accessories",
     description: "Computer peripherals, cables, and other accessories",
-    createdAt: "2024-01-01T00:00:00Z",
+    createdAt: new Date("2024-01-01").toISOString(),
   },
   {
     id: "5",
     name: "Monitors",
     description: "Computer displays and screens",
-    createdAt: "2024-01-01T00:00:00Z",
+    createdAt: new Date("2024-01-01").toISOString(),
   },
 ];
 
@@ -82,7 +82,7 @@ export const INITIAL_PRODUCTS = [
     quantity: 25,
     price: 2499.99,
     createdBy: "john.smith@ihuza.com",
-    createdAt: "2024-12-10T00:00:00Z",
+    createdAt: new Date("2024-12-10").toISOString(),
   },
   {
     id: "2",
@@ -90,7 +90,8 @@ export const INITIAL_PRODUCTS = [
     categoryId: "1",
     quantity: 18,
     price: 1299.99,
-    createdAt: "2024-12-09T00:00:00Z",
+    createdBy: "admin@ihuza.com",
+    createdAt: new Date("2024-12-09").toISOString(),
   },
   {
     id: "3",
@@ -98,7 +99,8 @@ export const INITIAL_PRODUCTS = [
     categoryId: "2",
     quantity: 5,
     price: 1199.99,
-    createdAt: "2024-12-08T00:00:00Z",
+    createdBy: "sarah.j@ihuza.com",
+    createdAt: new Date("2024-12-08").toISOString(),
   },
   {
     id: "4",
@@ -106,7 +108,8 @@ export const INITIAL_PRODUCTS = [
     categoryId: "3",
     quantity: 30,
     price: 599.99,
-    createdAt: "2024-12-07T00:00:00Z",
+    createdBy: "john.smith@ihuza.com",
+    createdAt: new Date("2024-12-07").toISOString(),
   },
   {
     id: "5",
@@ -114,7 +117,8 @@ export const INITIAL_PRODUCTS = [
     categoryId: "3",
     quantity: 0,
     price: 999.99,
-    createdAt: "2024-12-06T00:00:00Z",
+    createdBy: "admin@ihuza.com",
+    createdAt: new Date("2024-12-06").toISOString(),
   },
   {
     id: "6",
@@ -122,7 +126,8 @@ export const INITIAL_PRODUCTS = [
     categoryId: "2",
     quantity: 42,
     price: 899.99,
-    createdAt: "2024-12-05T00:00:00Z",
+    createdBy: "sarah.j@ihuza.com",
+    createdAt: new Date("2024-12-05").toISOString(),
   },
   {
     id: "7",
@@ -130,7 +135,8 @@ export const INITIAL_PRODUCTS = [
     categoryId: "4",
     quantity: 100,
     price: 99.99,
-    createdAt: "2024-12-04T00:00:00Z",
+    createdBy: "john.smith@ihuza.com",
+    createdAt: new Date("2024-12-04").toISOString(),
   },
   {
     id: "8",
@@ -138,7 +144,8 @@ export const INITIAL_PRODUCTS = [
     categoryId: "5",
     quantity: 8,
     price: 799.99,
-    createdAt: "2024-12-03T00:00:00Z",
+    createdBy: "admin@ihuza.com",
+    createdAt: new Date("2024-12-03").toISOString(),
   },
   {
     id: "9",
@@ -146,7 +153,8 @@ export const INITIAL_PRODUCTS = [
     categoryId: "4",
     quantity: 55,
     price: 149.99,
-    createdAt: "2024-12-02T00:00:00Z",
+    createdBy: "sarah.j@ihuza.com",
+    createdAt: new Date("2024-12-02").toISOString(),
   },
   {
     id: "10",
@@ -154,6 +162,7 @@ export const INITIAL_PRODUCTS = [
     categoryId: "5",
     quantity: 0,
     price: 649.99,
-    createdAt: "2024-12-01T00:00:00Z",
+    createdBy: "john.smith@ihuza.com",
+    createdAt: new Date("2024-12-01").toISOString(),
   },
 ];

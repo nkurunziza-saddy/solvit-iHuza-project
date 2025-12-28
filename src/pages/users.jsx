@@ -14,10 +14,10 @@ import { SimpleCard } from "../components/base/card";
 import { Button } from "../components/base/button";
 import { Badge } from "../components/base/badge";
 import { Modal } from "../components/base/modal";
-import { Input } from "../components/base/input";
-import { Select } from "../components/base/select";
 import { IconCard } from "../components/icon-card";
-import { cn } from "../utils";
+import { cn, formatRelativeTime } from "../utils";
+import { UserForm } from "../components/forms/user-form";
+import { toast } from "sonner";
 
 export const UsersPage = () => {
   const { users, addUser, updateUser, deleteUser } = useData();
@@ -28,14 +28,6 @@ export const UsersPage = () => {
   const [editingUser, setEditingUser] = useState(null);
   const [deleteConfirm, setDeleteConfirm] = useState(null);
 
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    role: "Staff",
-    status: "Active",
-  });
-
   const filteredUsers = users.filter(
     (user) =>
       user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -43,81 +35,44 @@ export const UsersPage = () => {
       user.role.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const resetForm = () => {
-    setFormData({
-      name: "",
-      email: "",
-      password: "",
-      role: "Staff",
-      status: "Active",
-    });
-    setEditingUser(null);
-  };
-
   const handleOpenModal = (user = null) => {
-    if (user) {
-      setEditingUser(user);
-      setFormData({
-        name: user.name,
-        email: user.email,
-        password: "",
-        role: user.role,
-        status: user.status,
-      });
-    } else {
-      resetForm();
-    }
+    setEditingUser(user);
     setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    resetForm();
+    setEditingUser(null);
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const userData = {
-      name: formData.name,
-      email: formData.email,
-      role: formData.role,
-      status: formData.status,
-    };
-
-    if (formData.password) {
-      userData.password = formData.password;
-    }
-
+  const handleFormSubmit = (value) => {
     if (editingUser) {
-      updateUser(editingUser.id, userData);
+      const result = updateUser(editingUser.id, value);
+      if (result.error) {
+        toast.error(result.error);
+        return;
+      }
+      toast.success("User updated successfully");
     } else {
-      addUser({ ...userData, password: formData.password });
+      const result = addUser(value);
+      if (result.error) {
+        toast.error(result.error);
+        return;
+      }
+      toast.success("User added successfully");
     }
-
     handleCloseModal();
   };
 
   const handleDelete = (id) => {
-    deleteUser(id);
+    const result = deleteUser(id);
+    if (result.error) {
+      toast.error(result.error);
+      return;
+    }
+    toast.success("User deleted successfully");
     setDeleteConfirm(null);
   };
-
-  const roleOptions = [
-    { value: "Admin", label: "Admin" },
-    { value: "Manager", label: "Manager" },
-    { value: "Staff", label: "Staff" },
-  ];
-
-  const statusOptions = [
-    { value: "Active", label: "Active" },
-    { value: "Inactive", label: "Inactive" },
-  ];
 
   const getRoleIcon = (role) => {
     switch (role) {
@@ -233,7 +188,7 @@ export const UsersPage = () => {
                         <Badge text={user.status} />
                       </td>
                       <td className="px-4 py-3 text-sm text-muted-foreground">
-                        {user.lastLogin}
+                        {formatRelativeTime(user.lastLogin)}
                       </td>
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-1">
@@ -279,67 +234,11 @@ export const UsersPage = () => {
         onClose={handleCloseModal}
         title={editingUser ? "Edit User" : "Add User"}
       >
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <Input
-            label="Full Name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            placeholder="Enter full name"
-            required
-          />
-          <Input
-            label="Email"
-            name="email"
-            type="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="Enter email address"
-            required
-          />
-          <Input
-            label={
-              editingUser ? "New Password (leave blank to keep)" : "Password"
-            }
-            name="password"
-            type="password"
-            value={formData.password}
-            onChange={handleChange}
-            placeholder={editingUser ? "Enter new password" : "Enter password"}
-            required={!editingUser}
-          />
-          <div className="grid grid-cols-2 gap-4">
-            <Select
-              label="Role"
-              name="role"
-              value={formData.role}
-              onChange={handleChange}
-              options={roleOptions}
-              required
-            />
-            <Select
-              label="Status"
-              name="status"
-              value={formData.status}
-              onChange={handleChange}
-              options={statusOptions}
-              required
-            />
-          </div>
-          <div className="flex gap-3 pt-2">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={handleCloseModal}
-              className="flex-1"
-            >
-              Cancel
-            </Button>
-            <Button type="submit" className="flex-1">
-              {editingUser ? "Save Changes" : "Add User"}
-            </Button>
-          </div>
-        </form>
+        <UserForm
+          editingUser={editingUser}
+          onClose={handleCloseModal}
+          onSubmit={handleFormSubmit}
+        />
       </Modal>
 
       <Modal

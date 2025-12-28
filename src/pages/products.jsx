@@ -5,11 +5,11 @@ import { SimpleCard } from "../components/base/card";
 import { Button } from "../components/base/button";
 import { Badge } from "../components/base/badge";
 import { Modal } from "../components/base/modal";
-import { Input } from "../components/base/input";
-import { Select } from "../components/base/select";
 import { IconCard } from "../components/icon-card";
 import { useAuth } from "../contexts/auth-context";
 import { checkQuantityStatus } from "../utils";
+import { ProductForm } from "../components/forms/product-form";
+import { toast } from "sonner";
 
 export const ProductsPage = () => {
   const {
@@ -26,12 +26,6 @@ export const ProductsPage = () => {
   const [editingProduct, setEditingProduct] = useState(null);
   const [deleteConfirm, setDeleteConfirm] = useState(null);
   const { user, isAdmin } = useAuth();
-  const [formData, setFormData] = useState({
-    name: "",
-    categoryId: "",
-    quantity: "",
-    price: "",
-  });
 
   const filteredProducts = products
     .filter((product) => {
@@ -49,96 +43,48 @@ export const ProductsPage = () => {
       }
     })
     .map((p) => {
-      return { ...p, category: getCategoryById(p.categoryId).name };
+      const category = getCategoryById(p.categoryId);
+      return { ...p, category: category.data?.name ?? "Unknown" };
     });
-
-  const resetForm = () => {
-    setFormData({
-      name: "",
-      categoryId: "",
-      quantity: "",
-      price: "",
-    });
-    setEditingProduct(null);
-  };
 
   const handleOpenModal = (product = null) => {
-    if (product) {
-      setEditingProduct(product);
-      setFormData({
-        name: product.name,
-        categoryId: product.categoryId,
-        quantity: String(product.quantity),
-        price: String(product.price),
-      });
-    } else {
-      resetForm();
-    }
+    setEditingProduct(product);
     setIsModalOpen(true);
   };
 
-  console.log(filteredProducts);
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    resetForm();
+    setEditingProduct(null);
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const category = categories.find((c) => c.id === formData.categoryId);
-
-    if (!category) {
-      setError({
-        categoryId: "Category not found",
-      });
-      return;
-    }
-
-    if (formData.quantity < 0 || isNaN(formData.quantity)) {
-      setError({
-        quantity: "Quantity cannot be negative or not a number",
-      });
-      return;
-    }
-
-    if (formData.price < 0 || isNaN(formData.price)) {
-      setError({
-        name: "Price cannot be negative or not a number",
-      });
-      return;
-    }
-
-    const productData = {
-      name: formData.name,
-      categoryId: formData.categoryId,
-      quantity: Number(formData.quantity),
-      price: Number(formData.price),
-    };
-
+  const handleFormSubmit = (value) => {
     if (editingProduct) {
-      updateProduct(editingProduct.id, productData);
+      const result = updateProduct(editingProduct.id, value);
+      if (result.error) {
+        toast.error(result.error);
+        return;
+      }
+      toast.success("Product updated successfully");
     } else {
-      addProduct(productData);
+      const result = addProduct(value);
+      if (result.error) {
+        toast.error(result.error);
+        return;
+      }
+      toast.success("Product added successfully");
     }
-
     handleCloseModal();
   };
 
   const handleDelete = (id) => {
-    deleteProduct(id);
+    const result = deleteProduct(id);
+    if (result.error) {
+      toast.error(result.error);
+      return;
+    }
+    toast.success("Product deleted successfully");
     setDeleteConfirm(null);
   };
-
-  const categoryOptions = categories.map((c) => ({
-    value: c.id,
-    label: c.name,
-  }));
 
   return (
     <>
@@ -259,61 +205,12 @@ export const ProductsPage = () => {
         onClose={handleCloseModal}
         title={editingProduct ? "Edit Product" : "Add Product"}
       >
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <Input
-            label="Product Name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            placeholder="Enter product name"
-            required
-          />
-          <Select
-            label="Category"
-            name="categoryId"
-            value={formData.categoryId}
-            onChange={handleChange}
-            options={categoryOptions}
-            placeholder="Select a category"
-            required
-          />
-          <div className="grid grid-cols-2 gap-4">
-            <Input
-              label="Quantity"
-              name="quantity"
-              type="number"
-              value={formData.quantity}
-              onChange={handleChange}
-              placeholder="0"
-              min="0"
-              required
-            />
-            <Input
-              label="Price (rwf)"
-              name="price"
-              type="number"
-              value={formData.price}
-              onChange={handleChange}
-              placeholder="0.00"
-              min="0"
-              step="0.01"
-              required
-            />
-          </div>
-          <div className="flex gap-3 pt-2">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={handleCloseModal}
-              className="flex-1"
-            >
-              Cancel
-            </Button>
-            <Button type="submit" className="flex-1">
-              {editingProduct ? "Save Changes" : "Add Product"}
-            </Button>
-          </div>
-        </form>
+        <ProductForm
+          editingProduct={editingProduct}
+          categories={categories}
+          onClose={handleCloseModal}
+          onSubmit={handleFormSubmit}
+        />
       </Modal>
 
       <Modal

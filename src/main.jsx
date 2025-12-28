@@ -7,18 +7,21 @@ import { ThemeProvider } from "./contexts/theme-context";
 import { AuthProvider } from "./contexts/auth-context";
 import { DataProvider } from "./contexts/data-context";
 import { Toaster } from "./components/base/toast.jsx";
+import { ErrorBoundary } from "./components/error-boundary.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
-      <ThemeProvider>
-        <AuthProvider>
-          <DataProvider>
-            <App />
-            <Toaster />
-          </DataProvider>
-        </AuthProvider>
-      </ThemeProvider>
+      <ErrorBoundary>
+        <ThemeProvider>
+          <AuthProvider>
+            <DataProvider>
+              <App />
+              <Toaster />
+            </DataProvider>
+          </AuthProvider>
+        </ThemeProvider>
+      </ErrorBoundary>
     </BrowserRouter>
   </StrictMode>
 );

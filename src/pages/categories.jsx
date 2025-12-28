@@ -3,9 +3,9 @@ import { Plus, Search, Edit2, Trash2, Layers, FolderOpen } from "lucide-react";
 import { useData } from "../contexts/data-context";
 import { Button } from "../components/base/button";
 import { Modal } from "../components/base/modal";
-import { Input } from "../components/base/input";
-import { Textarea } from "../components/base/textarea";
 import { IconCard } from "../components/icon-card";
+import { CategoryForm } from "../components/forms/category-form";
+import { toast } from "sonner";
 
 export const CategoriesPage = () => {
   const {
@@ -21,62 +21,48 @@ export const CategoriesPage = () => {
   const [editingCategory, setEditingCategory] = useState(null);
   const [deleteConfirm, setDeleteConfirm] = useState(null);
 
-  const [formData, setFormData] = useState({
-    name: "",
-    description: "",
-  });
-
   const filteredCategories = categories.filter(
     (category) =>
       category.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       category.description?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const resetForm = () => {
-    setFormData({
-      name: "",
-      description: "",
-    });
-    setEditingCategory(null);
-  };
-
   const handleOpenModal = (category = null) => {
-    if (category) {
-      setEditingCategory(category);
-      setFormData({
-        name: category.name,
-        description: category.description || "",
-      });
-    } else {
-      resetForm();
-    }
+    setEditingCategory(category);
     setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    resetForm();
+    setEditingCategory(null);
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
+  const handleFormSubmit = (value) => {
     if (editingCategory) {
-      updateCategory(editingCategory.id, formData);
+      const result = updateCategory(editingCategory.id, value);
+      if (result.error) {
+        toast.error(result.error);
+        return;
+      }
+      toast.success("Category updated successfully");
     } else {
-      addCategory(formData);
+      const result = addCategory(value);
+      if (result.error) {
+        toast.error(result.error);
+        return;
+      }
+      toast.success("Category added successfully");
     }
-
     handleCloseModal();
   };
 
   const handleDelete = (id) => {
-    deleteCategory(id);
+    const result = deleteCategory(id);
+    if (result.error) {
+      toast.error(result.error);
+      return;
+    }
+    toast.success("Category deleted successfully");
     setDeleteConfirm(null);
   };
 
@@ -114,7 +100,8 @@ export const CategoriesPage = () => {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {filteredCategories.map((category, index) => {
-            const productCount = getProductCountByCategory(category.id);
+            const productCount =
+              getProductCountByCategory(category.id).data ?? 0;
             return (
               <div
                 key={category.id}
@@ -171,37 +158,11 @@ export const CategoriesPage = () => {
         onClose={handleCloseModal}
         title={editingCategory ? "Edit Category" : "Add Category"}
       >
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <Input
-            label="Category Name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            placeholder="Enter category name"
-            required
-          />
-          <Textarea
-            label="Description"
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            placeholder="Enter category description (optional)"
-            rows={3}
-          />
-          <div className="flex gap-3 pt-2">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={handleCloseModal}
-              className="flex-1"
-            >
-              Cancel
-            </Button>
-            <Button type="submit" className="flex-1">
-              {editingCategory ? "Save Changes" : "Add Category"}
-            </Button>
-          </div>
-        </form>
+        <CategoryForm
+          editingCategory={editingCategory}
+          onClose={handleCloseModal}
+          onSubmit={handleFormSubmit}
+        />
       </Modal>
 
       <Modal

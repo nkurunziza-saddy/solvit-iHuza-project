@@ -9,7 +9,6 @@ import { DashboardPage } from "./pages/dashboard";
 import { ProductsPage } from "./pages/products";
 import { CategoriesPage } from "./pages/categories";
 import { UsersPage } from "./pages/users";
-import TestPage from "./pages/test";
 
 function App() {
   return (
@@ -17,7 +16,6 @@ function App() {
       {/* public */}
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
-      <Route path="/test" element={<TestPage />} />
 
       {/* protected */}
       <Route

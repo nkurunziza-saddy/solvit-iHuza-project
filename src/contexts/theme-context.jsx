@@ -2,10 +2,12 @@ import { createContext, useContext, useState, useEffect } from "react";
 
 const ThemeContext = createContext(null);
 
+const THEME_STORAGE_KEY = "ihuza-theme";
+
 export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(() => {
     if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("ihuza-theme") || "light";
+      const saved = localStorage.getItem(THEME_STORAGE_KEY) || "light";
       return saved;
     }
     return "light";
@@ -18,7 +20,7 @@ export function ThemeProvider({ children }) {
     } else {
       root.classList.remove("dark");
     }
-    localStorage.setItem("ihuza-theme", theme);
+    localStorage.setItem(THEME_STORAGE_KEY, theme);
   }, [theme]);
 
   const toggleTheme = () => {

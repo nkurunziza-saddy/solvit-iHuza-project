@@ -12,28 +12,29 @@ import { IconCard } from "../icon-card";
 import { cn } from "../../utils";
 import { useAuth } from "../../contexts/auth-context";
 
-const getNavItems = (isAdmin) => [
-  {
-    label: "Dashboard",
-    icon: Computer,
-    path: "/dashboard",
-  },
-  isAdmin && {
-    label: "Users",
-    icon: UserIcon,
-    path: "/users",
-  },
-  {
-    label: "Products",
-    icon: BoxIcon,
-    path: "/products",
-  },
-  {
-    label: "Categories",
-    icon: Layers,
-    path: "/categories",
-  },
-];
+const getNavItems = (isAdmin) =>
+  [
+    {
+      label: "Dashboard",
+      icon: Computer,
+      path: "/dashboard",
+    },
+    isAdmin && {
+      label: "Users",
+      icon: UserIcon,
+      path: "/users",
+    },
+    {
+      label: "Products",
+      icon: BoxIcon,
+      path: "/products",
+    },
+    {
+      label: "Categories",
+      icon: Layers,
+      path: "/categories",
+    },
+  ].filter(Boolean);
 
 export const Sidebar = () => {
   const { isAdmin, logout } = useAuth();

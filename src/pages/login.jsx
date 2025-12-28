@@ -4,40 +4,39 @@ import { BoxIcon, Eye, EyeOff } from "lucide-react";
 import { useAuth } from "../contexts/auth-context";
 import { Button } from "../components/base/button";
 import { Input } from "../components/base/input";
+import { useForm } from "@tanstack/react-form";
+import { z } from "zod";
+
+const schema = z.object({
+  email: z.email("Invalid email address"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+});
 
 export const LoginPage = () => {
   const { login, isAuthenticated } = useAuth();
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [genErrors, setGenErrors] = useState("");
+
+  const form = useForm({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validators: {
+      onChange: schema,
+    },
+    onSubmit: ({ value }) => {
+      const res = login(value.email, value.password);
+
+      if (!res.result) {
+        setGenErrors(res.error);
+      }
+    },
+  });
 
   if (isAuthenticated) {
     return <Navigate to="/dashboard" replace />;
   }
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    setError("");
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError("");
-
-    await new Promise((resolve) => setTimeout(resolve, 500));
-
-    const result = login(formData.email, formData.password);
-    if (!result.success) {
-      setError(result.error);
-    }
-    setIsLoading(false);
-  };
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-linear-to-br from-primaryColor-500/10 via-background to-accent-500/10">
@@ -64,58 +63,69 @@ export const LoginPage = () => {
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <Input
-              label="Email"
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="Enter your email"
-              required
-              autoComplete="email"
-            />
-
-            <div className="relative">
-              <Input
-                label="Password"
-                type={showPassword ? "text" : "password"}
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                placeholder="Enter your password"
-                required
-                autoComplete="current-password"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-[2.1rem] text-muted-foreground hover:text-foreground transition-colors"
-              >
-                {showPassword ? (
-                  <EyeOff className="size-4" />
-                ) : (
-                  <Eye className="size-4" />
-                )}
-              </button>
-            </div>
-
-            {error && (
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              form.handleSubmit();
+            }}
+            className="space-y-4"
+          >
+            {genErrors && (
               <div className="bg-destructive/10 border border-destructive/30 rounded-lg p-3 text-sm text-destructive">
-                {error}
+                {genErrors}
               </div>
             )}
-
-            <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? (
-                <span className="flex items-center gap-2">
-                  <span className="size-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  Signing in...
-                </span>
-              ) : (
-                "Sign in"
+            <form.Field name="email">
+              {(field) => (
+                <Input
+                  label="Email"
+                  type="email"
+                  name={field.name}
+                  value={field.state.value}
+                  onBlur={field.handleBlur}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  error={field.state.meta.errors?.[0]?.message}
+                  autoComplete="email"
+                />
               )}
-            </Button>
+            </form.Field>
+
+            <form.Field name="password">
+              {(field) => (
+                <div className="relative">
+                  <Input
+                    label="Password"
+                    type={showPassword ? "text" : "password"}
+                    name={field.name}
+                    value={field.state.value}
+                    onBlur={field.handleBlur}
+                    placeholder="*********"
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    error={field.state.meta.errors?.[0]?.message}
+                    autoComplete="new-password"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-[2.3rem] text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {showPassword ? (
+                      <EyeOff className="size-4" />
+                    ) : (
+                      <Eye className="size-4" />
+                    )}
+                  </button>
+                </div>
+              )}
+            </form.Field>
+
+            <form.Subscribe selector={(s) => [s.canSubmit, s.isSubmitting]}>
+              {([canSubmit, isSubmitting]) => (
+                <Button type="submit" disabled={!canSubmit || isSubmitting}>
+                  {isSubmitting ? "Signing in..." : "Sign in"}
+                </Button>
+              )}
+            </form.Subscribe>
           </form>
 
           <div className="mt-6 text-center">

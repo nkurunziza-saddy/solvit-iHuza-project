@@ -50,92 +50,172 @@ export function DataProvider({ children }) {
   }, [users]);
 
   const addProduct = (product) => {
+    const existingProduct = products.find(
+      (p) => p.name.toLowerCase() === product.name.toLowerCase()
+    );
+    if (existingProduct) {
+      return { error: "Product name already exists" };
+    }
+
     const newProduct = {
       ...product,
       id: String(Date.now()),
       createdAt: new Date().toISOString(),
       createdBy: user.email,
     };
+
     setProducts((prev) => [newProduct, ...prev]);
-    return newProduct;
+    return { data: newProduct };
   };
 
   const updateProduct = (id, updates) => {
+    const existingProduct = products.find((p) => p.id === id);
+    if (!existingProduct) {
+      return { error: "Product not found" };
+    }
+    if (user.role !== "Admin" && user.email !== existingProduct.createdBy) {
+      return { error: "Unauthorized" };
+    }
     setProducts((prev) =>
       prev.map((p) => (p.id === id ? { ...p, ...updates } : p))
     );
+    return { data: "success" };
   };
 
   const deleteProduct = (id) => {
+    const existingProduct = products.find((p) => p.id === id);
+    if (!existingProduct) {
+      return { error: "Product not found" };
+    }
+    if (user.role !== "Admin" && user.email !== existingProduct.createdBy) {
+      return { error: "Unauthorized" };
+    }
     setProducts((prev) => prev.filter((p) => p.id !== id));
+    return { data: "success" };
   };
 
   const getProductById = (id) => {
-    return products.find((p) => p.id === id);
+    const foundProduct = products.find((p) => p.id === id);
+    if (!foundProduct) {
+      return { error: "Product not found" };
+    }
+    return { data: foundProduct };
   };
 
   const addCategory = (category) => {
+    if (user.role !== "Admin") {
+      return { error: "Unauthorized" };
+    }
+
+    const existingCat = categories.find(
+      (c) => c.name.toLowerCase() === category.name.toLowerCase()
+    );
+    if (existingCat) {
+      return { error: "Category name already exists" };
+    }
+
     const newCategory = {
       ...category,
       id: String(Date.now()),
       createdAt: new Date().toISOString(),
     };
     setCategories((prev) => [newCategory, ...prev]);
-    return newCategory;
+    return { data: newCategory };
   };
 
   const updateCategory = (id, updates) => {
+    const existingCategory = categories.find((c) => c.id === id);
+    if (!existingCategory) {
+      return { error: "Category not found" };
+    }
+    if (user.role !== "Admin") {
+      return { error: "Unauthorized" };
+    }
     setCategories((prev) =>
       prev.map((c) => (c.id === id ? { ...c, ...updates } : c))
     );
-    // cascase category name
-    if (updates.name) {
-      const oldCategory = categories.find((c) => c.id === id);
-      if (oldCategory && oldCategory.name !== updates.name) {
-        setProducts((prev) =>
-          prev.map((p) =>
-            p.categoryId === id ? { ...p, category: updates.name } : p
-          )
-        );
-      }
-    }
+    return { data: "success" };
   };
 
   const deleteCategory = (id) => {
+    const existingCategory = categories.find((c) => c.id === id);
+    if (!existingCategory) {
+      return { error: "Category not found" };
+    }
+    if (user.role !== "Admin") {
+      return { error: "Unauthorized" };
+    }
     setCategories((prev) => prev.filter((c) => c.id !== id));
+    return { data: "success" };
   };
 
   const getCategoryById = (id) => {
-    return categories.find((c) => c.id === id);
+    const foundCategory = categories.find((c) => c.id === id);
+    if (!foundCategory) {
+      return { error: "Category not found" };
+    }
+    return { data: foundCategory };
   };
 
   const getProductCountByCategory = (categoryId) => {
-    return products.filter((p) => p.categoryId === categoryId).length;
+    const foundCategory = categories.find((c) => c.id === categoryId);
+    if (!foundCategory) {
+      return { error: "Category not found" };
+    }
+    const count = products.filter((p) => p.categoryId === categoryId).length;
+    return { data: count };
   };
 
-  const addUser = (user) => {
+  const addUser = (userData) => {
+    const existingByEmail = users.find(
+      (u) => u.email.toLowerCase() === userData.email.toLowerCase()
+    );
+    if (existingByEmail) {
+      return { error: "Email already exists" };
+    }
+
     const newUser = {
-      ...user,
+      ...userData,
       id: String(Date.now()),
       createdAt: new Date().toISOString(),
-      lastLogin: "Never",
+      lastLogin: undefined,
     };
     setUsers((prev) => [newUser, ...prev]);
-    return newUser;
+    return { data: newUser };
   };
 
   const updateUser = (id, updates) => {
+    const existingUser = users.find((u) => u.id === id);
+    if (!existingUser) {
+      return { error: "User not found" };
+    }
+    if (user.role !== "Admin" && user.email !== existingUser.email) {
+      return { error: "Unauthorized" };
+    }
     setUsers((prev) =>
       prev.map((u) => (u.id === id ? { ...u, ...updates } : u))
     );
+    return { data: "success" };
   };
 
   const deleteUser = (id) => {
+    const existingUser = users.find((u) => u.id === id);
+    if (!existingUser) {
+      return { error: "User not found" };
+    }
+    if (user.role !== "Admin" && user.email !== existingUser.email) {
+      return { error: "Unauthorized" };
+    }
     setUsers((prev) => prev.filter((u) => u.id !== id));
+    return { data: "success" };
   };
 
   const getUserById = (id) => {
-    return users.find((u) => u.id === id);
+    const foundUser = users.find((u) => u.id === id);
+    if (!foundUser) {
+      return { error: "User not found" };
+    }
+    return { data: foundUser };
   };
 
   // stats
