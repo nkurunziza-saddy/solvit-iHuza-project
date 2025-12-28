@@ -16,9 +16,11 @@ export const Navbar = ({ onMenuClick }) => {
   const location = useLocation();
 
   const pageTitle = pageTitles[location.pathname] || "Dashboard";
+  const isDashboard =
+    location.pathname.split("/").includes("dashboard") || false;
 
   return (
-    <nav className="w-full p-4 border-b flex justify-between items-center bg-background">
+    <nav className="w-full px-4 h-20 border-b flex justify-between items-center bg-background">
       <div className="flex items-center gap-4">
         <button
           onClick={onMenuClick}
@@ -29,9 +31,11 @@ export const Navbar = ({ onMenuClick }) => {
         </button>
         <div className="flex flex-col gap-0.5">
           <div className="text-lg md:text-xl font-bold">{pageTitle}</div>
-          <span className="text-xs md:text-sm text-muted-foreground hidden sm:block">
-            Welcome back, {user?.name || "User"}
-          </span>
+          {isDashboard && (
+            <span className="text-xs md:text-sm text-muted-foreground hidden sm:block">
+              Welcome back, {user?.name || "User"}
+            </span>
+          )}
         </div>
       </div>
       <div className="flex gap-4 md:gap-6 items-center">

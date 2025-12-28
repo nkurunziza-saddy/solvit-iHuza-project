@@ -3,6 +3,7 @@ import { Button } from "../base/button";
 import { Users, Package, ClipboardCheck } from "lucide-react";
 import { IconCard } from "../icon-card";
 import { cn } from "../../utils";
+import { useNavigate } from "react-router-dom";
 
 const QUICK_ACTIONS = [
   {
@@ -10,18 +11,21 @@ const QUICK_ACTIONS = [
     details: "View all registered users",
     icon: Users,
     variant: "primary",
+    path: "/users",
   },
   {
     label: "View Products",
     details: "View all registered products",
     icon: Package,
     variant: "accent",
+    path: "/products",
   },
   {
-    label: "View Assignments",
-    details: "View all product assignments",
+    label: "View Categories",
+    details: "View all product categories",
     icon: ClipboardCheck,
     variant: "success",
+    path: "/categories",
   },
 ];
 
@@ -32,6 +36,10 @@ const bgVariant = {
 };
 
 export const QuickActions = () => {
+  const navigate = useNavigate();
+  const handleNavigation = (path) => {
+    navigate(path);
+  };
   return (
     <Card title={"Quick Actions"} asideText={"View all"}>
       <div className="flex flex-col gap-2">
@@ -54,7 +62,12 @@ export const QuickActions = () => {
                 <p className="text-sm text-muted-foreground">{item.details}</p>
               </div>
             </div>
-            <Button variant={item.variant} size="sm" className="py-1">
+            <Button
+              onClick={() => handleNavigation(item.path)}
+              variant={item.variant}
+              size="sm"
+              className="py-1"
+            >
               Go
             </Button>
           </div>

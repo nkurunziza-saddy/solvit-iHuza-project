@@ -129,13 +129,6 @@ export const LoginPage = () => {
               </Link>
             </p>
           </div>
-
-          <div className="mt-6 p-3 bg-muted/50 rounded-lg">
-            <p className="text-xs text-muted-foreground text-center">
-              <span className="font-medium">Demo:</span> admin@ihuza.com /
-              admin123
-            </p>
-          </div>
         </div>
       </div>
     </div>

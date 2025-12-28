@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { INITIAL_USERS } from "../data/seed";
+import { useEffectEvent } from "react";
 
 const AuthContext = createContext(null);
 
@@ -16,6 +17,8 @@ export function AuthProvider({ children }) {
       localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(INITIAL_USERS));
     }
   }, []);
+
+  useEffectEvent;
 
   useEffect(() => {
     const savedAuth = localStorage.getItem(AUTH_STORAGE_KEY);

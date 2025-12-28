@@ -18,15 +18,11 @@ const getNavItems = (isAdmin) => [
     icon: Computer,
     path: "/dashboard",
   },
-  ...(isAdmin
-    ? [
-        {
-          label: "Users",
-          icon: UserIcon,
-          path: "/users",
-        },
-      ]
-    : []),
+  isAdmin && {
+    label: "Users",
+    icon: UserIcon,
+    path: "/users",
+  },
   {
     label: "Products",
     icon: BoxIcon,

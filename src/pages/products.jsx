@@ -8,29 +8,49 @@ import { Modal } from "../components/base/modal";
 import { Input } from "../components/base/input";
 import { Select } from "../components/base/select";
 import { IconCard } from "../components/icon-card";
+import { useAuth } from "../contexts/auth-context";
+import { checkQuantityStatus } from "../utils";
 
 export const ProductsPage = () => {
-  const { products, categories, addProduct, updateProduct, deleteProduct } =
-    useData();
+  const {
+    products,
+    categories,
+    addProduct,
+    updateProduct,
+    deleteProduct,
+    getCategoryById,
+  } = useData();
 
   const [searchQuery, setSearchQuery] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
   const [deleteConfirm, setDeleteConfirm] = useState(null);
-
+  const { user, isAdmin } = useAuth();
   const [formData, setFormData] = useState({
     name: "",
     categoryId: "",
     quantity: "",
     price: "",
-    status: "In Stock",
   });
 
-  const filteredProducts = products.filter(
-    (product) =>
-      product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      product.category.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredProducts = products
+    .filter((product) => {
+      if (isAdmin) {
+        return (
+          product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          product.category.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+      } else {
+        return (
+          product.createdBy === user.email &&
+          (product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            product.category.toLowerCase().includes(searchQuery.toLowerCase()))
+        );
+      }
+    })
+    .map((p) => {
+      return { ...p, category: getCategoryById(p.categoryId).name };
+    });
 
   const resetForm = () => {
     setFormData({
@@ -38,7 +58,6 @@ export const ProductsPage = () => {
       categoryId: "",
       quantity: "",
       price: "",
-      status: "In Stock",
     });
     setEditingProduct(null);
   };
@@ -51,7 +70,6 @@ export const ProductsPage = () => {
         categoryId: product.categoryId,
         quantity: String(product.quantity),
         price: String(product.price),
-        status: product.status,
       });
     } else {
       resetForm();
@@ -59,6 +77,7 @@ export const ProductsPage = () => {
     setIsModalOpen(true);
   };
 
+  console.log(filteredProducts);
   const handleCloseModal = () => {
     setIsModalOpen(false);
     resetForm();
@@ -73,13 +92,33 @@ export const ProductsPage = () => {
     e.preventDefault();
 
     const category = categories.find((c) => c.id === formData.categoryId);
+
+    if (!category) {
+      setError({
+        categoryId: "Category not found",
+      });
+      return;
+    }
+
+    if (formData.quantity < 0 || isNaN(formData.quantity)) {
+      setError({
+        quantity: "Quantity cannot be negative or not a number",
+      });
+      return;
+    }
+
+    if (formData.price < 0 || isNaN(formData.price)) {
+      setError({
+        name: "Price cannot be negative or not a number",
+      });
+      return;
+    }
+
     const productData = {
       name: formData.name,
       categoryId: formData.categoryId,
-      category: category?.name || "",
       quantity: Number(formData.quantity),
       price: Number(formData.price),
-      status: formData.status,
     };
 
     if (editingProduct) {
@@ -101,27 +140,8 @@ export const ProductsPage = () => {
     label: c.name,
   }));
 
-  const statusOptions = [
-    { value: "In Stock", label: "In Stock" },
-    { value: "Low Stock", label: "Low Stock" },
-    { value: "Out of Stock", label: "Out of Stock" },
-  ];
-
   return (
     <>
-      <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
-        <div>
-          <h1 className="text-xl md:text-2xl font-bold">Products</h1>
-          <p className="text-sm text-muted-foreground">
-            Manage your inventory products
-          </p>
-        </div>
-        <Button onClick={() => handleOpenModal()}>
-          <Plus className="size-4" />
-          Add Product
-        </Button>
-      </div>
-
       <div className="relative max-w-sm">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
         <input
@@ -133,7 +153,15 @@ export const ProductsPage = () => {
         />
       </div>
 
-      <SimpleCard>
+      <SimpleCard
+        title={"Products"}
+        asideComponent={
+          <Button onClick={() => handleOpenModal()}>
+            <Plus className="size-4" />
+            Add Product
+          </Button>
+        }
+      >
         <div className="overflow-x-auto min-w-0">
           <table className="w-full text-left">
             <thead>
@@ -196,7 +224,7 @@ export const ProductsPage = () => {
                       ${product.price.toFixed(2)}
                     </td>
                     <td className="px-4 py-3">
-                      <Badge text={product.status} />
+                      <Badge text={checkQuantityStatus(product.quantity)} />
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-1">
@@ -261,7 +289,7 @@ export const ProductsPage = () => {
               required
             />
             <Input
-              label="Price ($)"
+              label="Price (rwf)"
               name="price"
               type="number"
               value={formData.price}
@@ -272,14 +300,6 @@ export const ProductsPage = () => {
               required
             />
           </div>
-          <Select
-            label="Status"
-            name="status"
-            value={formData.status}
-            onChange={handleChange}
-            options={statusOptions}
-            required
-          />
           <div className="flex gap-3 pt-2">
             <Button
               type="button"

@@ -27,14 +27,14 @@ export const StatSection = () => {
     },
     {
       label: "Low Stock Alert",
-      value: String(stats.lowStockProducts + stats.outOfStockProducts),
+      value: String(stats.lowStockProducts),
       icon: AlertTriangleIcon,
       variant: "warning",
     },
   ];
 
   return (
-    <div className="grid gap-4 md:gap-6 grid-cols-2 lg:grid-cols-4">
+    <div className="grid gap-4 md:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
       {statItems.map((stat) => (
         <StatCard key={stat.label} {...stat} />
       ))}

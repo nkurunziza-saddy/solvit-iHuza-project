@@ -1,7 +1,7 @@
 import { Button } from "./button";
 import { cn } from "../../utils";
 
-export const Card = ({ children, title, asideText, className }) => {
+export const Card = ({ children, title, asideText, asideLink, className }) => {
   return (
     <div
       className={cn(
@@ -11,18 +11,30 @@ export const Card = ({ children, title, asideText, className }) => {
     >
       <div className="border-b flex justify-between px-5 py-4 items-center">
         {title && <h4 className="font-semibold text-foreground">{title}</h4>}
-        {asideText && (
-          <span className="text-sm text-muted-foreground cursor-pointer font-medium hover:text-foreground transition-colors">
-            {asideText}
-          </span>
-        )}
+        {asideText ? (
+          asideLink ? (
+            <a
+              href={asideLink}
+              className="text-sm text-muted-foreground cursor-pointer font-medium hover:text-foreground transition-colors"
+            >
+              {asideText}
+            </a>
+          ) : (
+            <span
+              href={asideLink}
+              className="text-sm text-muted-foreground cursor-pointer font-medium hover:text-foreground transition-colors"
+            >
+              {asideText}
+            </span>
+          )
+        ) : null}
       </div>
       <div className="p-5">{children}</div>
     </div>
   );
 };
 
-export const SimpleCard = ({ children, title, asideText, className }) => {
+export const SimpleCard = ({ children, title, asideComponent, className }) => {
   return (
     <div
       className={cn(
@@ -32,7 +44,7 @@ export const SimpleCard = ({ children, title, asideText, className }) => {
     >
       <div className="flex justify-between px-5 py-4 items-center border-b">
         {title && <h4 className="font-semibold text-foreground">{title}</h4>}
-        {asideText && <Button size="sm">{asideText}</Button>}
+        {asideComponent && asideComponent}
       </div>
       <div className="">{children}</div>
     </div>

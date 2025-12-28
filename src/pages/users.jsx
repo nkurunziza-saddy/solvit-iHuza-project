@@ -132,19 +132,6 @@ export const UsersPage = () => {
 
   return (
     <>
-      <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
-        <div>
-          <h1 className="text-xl md:text-2xl font-bold">Users</h1>
-          <p className="text-sm text-muted-foreground">
-            Manage user accounts and permissions
-          </p>
-        </div>
-        <Button onClick={() => handleOpenModal()}>
-          <Plus className="size-4" />
-          Add User
-        </Button>
-      </div>
-
       <div className="relative max-w-sm">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
         <input
@@ -156,7 +143,15 @@ export const UsersPage = () => {
         />
       </div>
 
-      <SimpleCard>
+      <SimpleCard
+        title={"Users"}
+        asideComponent={
+          <Button onClick={() => handleOpenModal()}>
+            <Plus className="size-4" />
+            Add User
+          </Button>
+        }
+      >
         <div className="overflow-x-auto min-w-0">
           <table className="w-full text-left">
             <thead>
@@ -304,9 +299,7 @@ export const UsersPage = () => {
           />
           <Input
             label={
-              editingUser
-                ? "New Password (leave blank to keep current)"
-                : "Password"
+              editingUser ? "New Password (leave blank to keep)" : "Password"
             }
             name="password"
             type="password"

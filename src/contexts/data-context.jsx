@@ -4,6 +4,7 @@ import {
   INITIAL_CATEGORIES,
   INITIAL_USERS,
 } from "../data/seed";
+import { useAuth } from "./auth-context";
 
 const DataContext = createContext(null);
 
@@ -15,6 +16,7 @@ export function DataProvider({ children }) {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [users, setUsers] = useState([]);
+  const { user } = useAuth();
 
   // init data from local
   useEffect(() => {
@@ -29,7 +31,6 @@ export function DataProvider({ children }) {
     setUsers(storedUsers ? JSON.parse(storedUsers) : INITIAL_USERS);
   }, []);
 
-  // add to local storage on changes
   useEffect(() => {
     if (products.length > 0) {
       localStorage.setItem(PRODUCTS_STORAGE_KEY, JSON.stringify(products));
@@ -53,6 +54,7 @@ export function DataProvider({ children }) {
       ...product,
       id: String(Date.now()),
       createdAt: new Date().toISOString(),
+      createdBy: user.email,
     };
     setProducts((prev) => [newProduct, ...prev]);
     return newProduct;
@@ -86,7 +88,7 @@ export function DataProvider({ children }) {
     setCategories((prev) =>
       prev.map((c) => (c.id === id ? { ...c, ...updates } : c))
     );
-    // update category name in products if changed
+    // cascase category name
     if (updates.name) {
       const oldCategory = categories.find((c) => c.id === id);
       if (oldCategory && oldCategory.name !== updates.name) {
@@ -141,12 +143,8 @@ export function DataProvider({ children }) {
     const totalProducts = products.length;
     const totalCategories = categories.length;
     const totalUsers = users.length;
-    const lowStockProducts = products.filter(
-      (p) => p.status === "Low Stock"
-    ).length;
-    const outOfStockProducts = products.filter(
-      (p) => p.status === "Out of Stock"
-    ).length;
+    const lowStockProducts = products.filter((p) => p.quantity <= 10).length;
+    const outOfStockProducts = products.filter((p) => p.quantity <= 0).length;
     const totalValue = products.reduce(
       (sum, p) => sum + p.price * p.quantity,
       0
