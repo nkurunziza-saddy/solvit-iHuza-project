@@ -1,6 +1,7 @@
 import { BoxIcon, Layers, AlertTriangleIcon, UserIcon } from "lucide-react";
-import { StatCard } from "../stat-card";
 import { useData } from "../../contexts/data-context";
+import { cn } from "../../utils";
+import { IconCard } from "../icon-card";
 
 export const StatSection = () => {
   const { getStats } = useData();
@@ -36,7 +37,18 @@ export const StatSection = () => {
   return (
     <div className="grid gap-4 md:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
       {statItems.map((stat) => (
-        <StatCard key={stat.label} {...stat} />
+        <div
+          key={stat.label}
+          className={cn(
+            "px-5 py-6 bg-background border shadow-sm rounded-xl flex items-center gap-5 transition-all hover:shadow-md"
+          )}
+        >
+          <IconCard icon={stat.icon} variant={stat.variant} size="lg" />
+          <div className="flex flex-col gap-0.5">
+            <h5 className={`text-2xl font-bold`}>{stat.value}</h5>
+            <span className="text-sm text-muted-foreground">{stat.label}</span>
+          </div>
+        </div>
       ))}
     </div>
   );

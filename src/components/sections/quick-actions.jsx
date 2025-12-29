@@ -55,7 +55,7 @@ export const QuickActions = () => {
               <IconCard
                 icon={item.icon}
                 variant={item.variant}
-                className="bg-transparent"
+                type={"outline"}
               />
               <div className="flex flex-col gap-0.5">
                 <h5 className="font-medium text-foreground">{item.label}</h5>

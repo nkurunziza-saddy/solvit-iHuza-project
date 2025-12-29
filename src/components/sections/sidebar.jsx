@@ -1,44 +1,44 @@
-import {
-  Book,
-  BoxIcon,
-  Computer,
-  Layers,
-  UserIcon,
-  LogOut,
-  X,
-} from "lucide-react";
+import { BoxIcon, Computer, Layers, UserIcon, LogOut, X } from "lucide-react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { IconCard } from "../icon-card";
 import { cn } from "../../utils";
 import { useAuth } from "../../contexts/auth-context";
-
-const getNavItems = (isAdmin) =>
-  [
-    {
-      label: "Dashboard",
-      icon: Computer,
-      path: "/dashboard",
-    },
-    isAdmin && {
-      label: "Users",
-      icon: UserIcon,
-      path: "/users",
-    },
-    {
-      label: "Products",
-      icon: BoxIcon,
-      path: "/products",
-    },
-    {
-      label: "Categories",
-      icon: Layers,
-      path: "/categories",
-    },
-  ].filter(Boolean);
+import { Badge } from "../base/badge";
+import { useData } from "../../contexts/data-context";
 
 export const Sidebar = () => {
   const { isAdmin, logout } = useAuth();
+  const { getStats } = useData();
+  const stats = getStats();
   const navigate = useNavigate();
+
+  const getNavItems = (isAdmin) =>
+    [
+      {
+        label: "Dashboard",
+        icon: Computer,
+        path: "/dashboard",
+      },
+      isAdmin && {
+        label: "Users",
+        icon: UserIcon,
+        path: "/users",
+        count: stats?.totalUsers || 0,
+      },
+      {
+        label: "Products",
+        icon: BoxIcon,
+        path: "/products",
+        count: stats?.totalProducts || 0,
+      },
+      {
+        label: "Categories",
+        icon: Layers,
+        path: "/categories",
+        count: stats?.totalCategories || 0,
+      },
+    ].filter(Boolean);
+
   const navItems = getNavItems(isAdmin);
 
   const handleLogout = () => {
@@ -67,23 +67,41 @@ export const Sidebar = () => {
                   cn(
                     "p-2.5 cursor-pointer flex justify-between items-center rounded-lg transition-colors",
                     isActive
-                      ? "bg-primaryColor-500 text-white shadow-sm"
+                      ? "bg-primaryColor-50 text-primaryColor-500 dark:bg-primaryColor-50 dark:text-primaryColor-400 shadow-sm"
                       : "hover:bg-muted text-foreground"
                   )
                 }
               >
                 {({ isActive }) => (
-                  <>
+                  <div className="flex justify-between items-center gap-2 w-full">
                     <div className="flex text-sm items-center gap-2">
                       <item.icon
                         className={cn(
                           "size-4",
-                          isActive ? "text-white" : "text-muted-foreground"
+                          isActive
+                            ? "text-primaryColor-500"
+                            : "text-muted-foreground"
                         )}
                       />
-                      <span className="font-medium">{item.label}</span>
+                      <span
+                        className={cn(
+                          "font-medium",
+                          isActive
+                            ? "text-primaryColor-500"
+                            : "text-muted-foreground"
+                        )}
+                      >
+                        {item.label}
+                      </span>
                     </div>
-                  </>
+                    {item.count !== undefined && (
+                      <Badge
+                        variant="muted"
+                        text={item.count}
+                        className="text-xs py-0.5 px-1.5 self-center"
+                      />
+                    )}
+                  </div>
                 )}
               </NavLink>
             </li>
@@ -108,7 +126,37 @@ export const Sidebar = () => {
 
 export function MobileSidebar({ open, setOpen }) {
   const { isAdmin, logout } = useAuth();
+  const { getStats } = useData();
+  const stats = getStats();
   const navigate = useNavigate();
+
+  const getNavItems = (isAdmin) =>
+    [
+      {
+        label: "Dashboard",
+        icon: Computer,
+        path: "/dashboard",
+      },
+      isAdmin && {
+        label: "Users",
+        icon: UserIcon,
+        path: "/users",
+        count: stats?.totalUsers || 0,
+      },
+      {
+        label: "Products",
+        icon: BoxIcon,
+        path: "/products",
+        count: stats?.totalProducts || 0,
+      },
+      {
+        label: "Categories",
+        icon: Layers,
+        path: "/categories",
+        count: stats?.totalCategories || 0,
+      },
+    ].filter(Boolean);
+
   const navItems = getNavItems(isAdmin);
 
   const handleLogout = () => {
@@ -158,7 +206,7 @@ export function MobileSidebar({ open, setOpen }) {
                 }
               >
                 {({ isActive }) => (
-                  <>
+                  <div className="flex justify-between items-center gap-2 w-full">
                     <div className="flex text-sm items-center gap-2">
                       <item.icon
                         className={cn(
@@ -168,7 +216,14 @@ export function MobileSidebar({ open, setOpen }) {
                       />
                       <span className="font-medium">{item.label}</span>
                     </div>
-                  </>
+                    {item.count !== undefined && (
+                      <Badge
+                        variant="muted"
+                        text={item.count}
+                        className="text-xs py-0.5 px-1.5 self-center"
+                      />
+                    )}
+                  </div>
                 )}
               </NavLink>
             </li>

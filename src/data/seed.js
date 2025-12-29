@@ -166,3 +166,78 @@ export const INITIAL_PRODUCTS = [
     createdAt: new Date("2024-12-01").toISOString(),
   },
 ];
+export const INITIAL_ACTIVITIES = [
+  // Product additions
+  {
+    id: "act-1",
+    type: "product-add",
+    itemId: "1",
+    doneBy: "john.smith@ihuza.com",
+    createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: "act-2",
+    type: "product-add",
+    itemId: "2",
+    doneBy: "admin@ihuza.com",
+    createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: "act-3",
+    type: "product-add",
+    itemId: "3",
+    doneBy: "sarah.j@ihuza.com",
+    createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: "act-4",
+    type: "product-add",
+    itemId: "4",
+    doneBy: "john.smith@ihuza.com",
+    createdAt: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: "act-5",
+    type: "product-add",
+    itemId: "5",
+    doneBy: "admin@ihuza.com",
+    createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+  // Category additions
+  {
+    id: "act-6",
+    type: "category-add",
+    itemId: "1",
+    doneBy: "admin@ihuza.com",
+    createdAt: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: "act-7",
+    type: "category-add",
+    itemId: "2",
+    doneBy: "admin@ihuza.com",
+    createdAt: new Date(Date.now() - 55 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: "act-8",
+    type: "category-add",
+    itemId: "3",
+    doneBy: "admin@ihuza.com",
+    createdAt: new Date(Date.now() - 50 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+  // User registrations
+  {
+    id: "act-9",
+    type: "user-add",
+    itemId: "2",
+    doneBy: "admin@ihuza.com",
+    createdAt: new Date(Date.now() - 300 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: "act-10",
+    type: "user-add",
+    itemId: "3",
+    doneBy: "admin@ihuza.com",
+    createdAt: new Date(Date.now() - 250 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+];

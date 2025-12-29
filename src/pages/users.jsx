@@ -191,24 +191,24 @@ export const UsersPage = () => {
                         {formatRelativeTime(user.lastLogin)}
                       </td>
                       <td className="px-4 py-3">
-                        <div className="flex items-center gap-1">
+                        <div className="flex items-center gap-3">
                           <button
                             onClick={() => handleOpenModal(user)}
                             type="button"
-                            className="p-2 rounded-lg hover:bg-muted transition-colors text-muted-foreground hover:text-primaryColor-500"
+                            className="transition-colors text-primaryColor-500/85 hover:text-primaryColor-500 text-sm"
                             title="Edit"
                           >
-                            <Edit2 className="size-4" />
+                            Edit
                           </button>
                           <button
                             onClick={() => setDeleteConfirm(user)}
                             type="button"
                             disabled={isCurrentUser}
                             className={cn(
-                              "p-2 rounded-lg transition-colors",
+                              "transition-colors text-sm text-destructive/85 hover:text-destructive",
                               isCurrentUser
                                 ? "opacity-30 cursor-not-allowed"
-                                : "hover:bg-destructive/10 text-muted-foreground hover:text-destructive"
+                                : ""
                             )}
                             title={
                               isCurrentUser
@@ -216,7 +216,7 @@ export const UsersPage = () => {
                                 : "Delete"
                             }
                           >
-                            <Trash2 className="size-4" />
+                            Delete
                           </button>
                         </div>
                       </td>

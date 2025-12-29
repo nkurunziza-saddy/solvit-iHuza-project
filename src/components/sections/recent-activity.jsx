@@ -1,68 +1,119 @@
 import { Card } from "../base/card";
-import { BoxIcon, AlertTriangleIcon, UserPlusIcon } from "lucide-react";
+import {
+  PackagePlus,
+  PackageMinus,
+  PackageCheck,
+  FolderPlus,
+  FolderPen,
+  FolderMinus,
+  UserPlus,
+  UserPen,
+  UserMinus,
+  Activity,
+} from "lucide-react";
 import { IconCard } from "../icon-card";
 import { cn } from "../../utils";
+import { useData } from "../../contexts/data-context";
 
-const ACTIVITIES = [
-  {
-    label: "Product added to inventory",
-    details: "MacBook Pro 16 M3 (PROD2024001)",
-    date: "Dec 4, 2024",
-    icon: BoxIcon,
-    type: "product-add",
+const activityConfig = {
+  "product-add": {
+    label: "Product added",
+    icon: PackagePlus,
   },
-  {
-    label: "Product assigned to Sarah Johnson",
-    details: "Dell ThinkPad X1 Carbon (PROD2024001)",
-    date: "Dec 3, 2024",
-    icon: BoxIcon,
-    type: "product-assign",
+  "product-update": {
+    label: "Product updated",
+    icon: PackageCheck,
   },
-  {
-    label: "Product assigned to Michael Brown",
-    details: "Apple MacBook Air M2 (PROD2024001)",
-    date: "Dec 2, 2024",
-    icon: BoxIcon,
-    type: "product-assign",
+  "product-delete": {
+    label: "Product deleted",
+    icon: PackageMinus,
   },
-  {
-    label: "Product sent for maintenance",
-    details: "HP Spectre x360 Screen replacement required",
-    date: "Jan 16, 2024",
-    icon: AlertTriangleIcon,
-    type: "product-maintenance",
+  "category-add": {
+    label: "Category added",
+    icon: FolderPlus,
   },
-  {
-    label: "New user registered",
-    details: "Amanda White Staff Member",
-    date: "Jan 14, 2024",
-    icon: UserPlusIcon,
-    type: "register",
+  "category-update": {
+    label: "Category updated",
+    icon: FolderPen,
   },
-];
+  "category-delete": {
+    label: "Category deleted",
+    icon: FolderMinus,
+  },
+  "user-add": {
+    label: "User added",
+    icon: UserPlus,
+  },
+  "user-update": {
+    label: "User updated",
+    icon: UserPen,
+  },
+  "user-delete": {
+    label: "User deleted",
+    icon: UserMinus,
+  },
+};
+
+const variantMap = {
+  "product-add": "success",
+  "product-update": "primary",
+  "product-delete": "warning",
+  "category-add": "success",
+  "category-update": "primary",
+  "category-delete": "warning",
+  "user-add": "success",
+  "user-update": "primary",
+  "user-delete": "warning",
+};
 
 export const RecentActivity = () => {
-  const variantType = {
-    primary: ["product-add", "register"],
-    success: ["product-assign"],
-    warning: ["product-maintenance"],
-  };
-  const mapVariant = (type) => {
-    if (variantType.primary.includes(type)) {
-      return "primary";
-    } else if (variantType.success.includes(type)) {
-      return "success";
-    } else if (variantType.warning.includes(type)) {
-      return "warning";
+  const { activities, getProductById, getCategoryById, getUserById } =
+    useData();
+
+  const getItemName = (activity) => {
+    try {
+      if (activity.type.startsWith("product-")) {
+        return getProductById(activity.itemId)?.data?.name || "Unknown product";
+      }
+      if (activity.type.startsWith("category-")) {
+        return (
+          getCategoryById(activity.itemId)?.data?.name || "Unknown category"
+        );
+      }
+      if (activity.type.startsWith("user-")) {
+        return getUserById(activity.itemId)?.data?.name || "Unknown user";
+      }
+    } catch {
+      return "Unknown item";
     }
-    return "primary";
+    return "Unknown item";
   };
+
+  const recentActivities = activities.slice(0, 4).map((activity) => {
+    const config = activityConfig[activity.type] || {
+      label: "Unknown activity",
+      icon: Activity,
+    };
+
+    return {
+      label: config.label,
+      details: getItemName(activity),
+      date: new Date(activity.createdAt).toLocaleDateString(),
+      icon: config.icon,
+      type: activity.type,
+      variant: variantMap[activity.type] || "default",
+    };
+  });
+
   return (
     <Card title={"Recent Activities"} asideText={"View all"}>
-      <div className="flex flex-col gap-1">
-        {ACTIVITIES.map((activity, index) => {
-          const variant = mapVariant(activity.type);
-          return (
+      {recentActivities.length === 0 ? (
+        <p className="text-muted-foreground text-sm py-4 text-center">
+          No recent activities
+        </p>
+      ) : (
+        <div className="flex flex-col gap-1">
+          {recentActivities.map((activity, index) => (
             <div
               key={index}
               className={cn(
@@ -70,7 +121,7 @@ export const RecentActivity = () => {
                 "hover:bg-muted/60"
               )}
             >
-              <IconCard icon={activity.icon} variant={variant} />
+              <IconCard icon={activity.icon} variant={activity.variant} />
               <div className="flex flex-col gap-1 flex-1">
                 <h5 className="font-medium text-foreground">
                   {activity.label}
@@ -83,9 +134,9 @@ export const RecentActivity = () => {
                 </span>
               </div>
             </div>
-          );
-        })}
-      </div>
+          ))}
+        </div>
+      )}
     </Card>
   );
 };

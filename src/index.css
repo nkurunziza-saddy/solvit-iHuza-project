@@ -19,11 +19,13 @@
 
   /* Semantic colors */
   --color-destructive: #ef4444;
-  --color-destructive-foreground: #dc2626;
+  --color-destructive-foreground: #ffffff;
   --color-success: #22c55e;
-  --color-success-foreground: #16a34a;
+  --color-success-foreground: #ffffff;
   --color-warning: #f59e0b;
-  --color-warning-foreground: #d97706;
+  --color-warning-foreground: #ffffff;
+  --color-info: #3b82f6;
+  --color-info-foreground: #ffffff;
 
   /* Purple accent */
   --color-accent-50: #faf5ff;
@@ -71,20 +73,47 @@
 }
 
 .dark {
-  --color-background: #0f172a;
+  /* Core colors - Dark Mode */
+  --color-background: #0c0f1a;
   --color-foreground: #f1f5f9;
-  --color-border: #334155;
-  --color-muted: #1e293b;
+  --color-border: #1e293b;
+  --color-muted: #131827;
   --color-muted-foreground: #94a3b8;
-  --color-card: #1e293b;
+  --color-card: #131827;
   --color-input: #1e293b;
   --color-ring: #3b82f6;
 
-  --color-primaryColor-50: #1e3a5f;
-  --color-primaryColor-100: #1e40af;
+  /* Semantic colors - slightly muted for dark mode */
+  --color-destructive: #f87171;
+  --color-destructive-foreground: #ffffff;
+  --color-success: #4ade80;
+  --color-success-foreground: #ffffff;
+  --color-warning: #fbbf24;
+  --color-warning-foreground: #ffffff;
+  --color-info: #60a5fa;
+  --color-info-foreground: #ffffff;
 
-  --color-accent-50: #2e1065;
-  --color-accent-100: #3b0764;
+  /* Primary colors - Dark Mode */
+  --color-primaryColor-50: #0f172a;
+  --color-primaryColor-100: #1e293b;
+  --color-primaryColor-200: #334155;
+  --color-primaryColor-300: #475569;
+  --color-primaryColor-400: #60a5fa;
+  --color-primaryColor-500: #3b82f6;
+  --color-primaryColor-600: #2563eb;
+  --color-primaryColor-700: #1d4ed8;
+  --color-primaryColor-800: #1e40af;
+  --color-primaryColor-900: #1e3a8a;
+
+  /* Accent colors - Dark Mode */
+  --color-accent-50: #1a0a2e;
+  --color-accent-100: #2e1065;
+  --color-accent-200: #3b0764;
+  --color-accent-300: #581c87;
+  --color-accent-400: #a855f7;
+  --color-accent-500: #c084fc;
+  --color-accent-600: #d8b4fe;
+  --color-accent-foreground: #ffffff;
 }
 
 @layer base {

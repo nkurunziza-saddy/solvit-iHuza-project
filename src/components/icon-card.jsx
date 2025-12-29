@@ -5,13 +5,17 @@ const iconCardVariants = cva("flex rounded-lg justify-center items-center", {
   variants: {
     variant: {
       default: "bg-muted text-muted-foreground",
-      primary: "bg-primaryColor-50 text-primaryColor-600",
-      accent: "bg-accent-100 text-accent-600",
-      success: "bg-success/16 text-success-foreground",
-      warning: "bg-warning/16 text-warning-foreground",
-      error: "bg-destructive/16 text-destructive-foreground",
+      primary:
+        "bg-primaryColor-50/85 text-primaryColor-600 dark:bg-primaryColor-500/20 dark:text-primaryColor-400",
+      accent:
+        "bg-accent-50/85 text-accent-600 dark:bg-accent-500/20 dark:text-accent-400",
+      success:
+        "bg-green-50/85 text-green-600 dark:bg-green-500/20 dark:text-green-400",
+      warning:
+        "bg-amber-50/85 text-amber-600 dark:bg-amber-500/20 dark:text-amber-400",
+      error: "bg-red-50/85 text-red-600 dark:bg-red-500/20 dark:text-red-400",
       ghost: "bg-transparent text-muted-foreground",
-      "primary-inverse": "bg-primaryColor-500 text-background",
+      "primary-inverse": "bg-primaryColor-500 text-white",
     },
     size: {
       sm: "size-6 p-1",
@@ -20,7 +24,7 @@ const iconCardVariants = cva("flex rounded-lg justify-center items-center", {
     },
     type: {
       filled: "",
-      outline: "border-none bg-transparent",
+      outline: "border-none !bg-transparent",
     },
   },
   defaultVariants: {

@@ -173,22 +173,22 @@ export const ProductsPage = () => {
                       <Badge text={checkQuantityStatus(product.quantity)} />
                     </td>
                     <td className="px-4 py-3">
-                      <div className="flex items-center gap-1">
+                      <div className="flex items-center gap-3">
                         <button
                           onClick={() => handleOpenModal(product)}
                           type="button"
-                          className="p-2 rounded-lg hover:bg-muted transition-colors text-muted-foreground hover:text-primaryColor-500"
+                          className="transition-colors text-sm text-primaryColor-500/85 hover:text-primaryColor-500"
                           title="Edit"
                         >
-                          <Edit2 className="size-4" />
+                          Edit
                         </button>
                         <button
                           onClick={() => setDeleteConfirm(product)}
                           type="button"
-                          className="p-2 rounded-lg hover:bg-destructive/10 transition-colors text-muted-foreground hover:text-destructive"
+                          className=" transition-colors text-sm text-destructive/85 hover:text-destructive"
                           title="Delete"
                         >
-                          <Trash2 className="size-4" />
+                          Delete
                         </button>
                       </div>
                     </td>

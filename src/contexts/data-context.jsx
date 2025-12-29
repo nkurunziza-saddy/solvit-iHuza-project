@@ -3,6 +3,7 @@ import {
   INITIAL_PRODUCTS,
   INITIAL_CATEGORIES,
   INITIAL_USERS,
+  INITIAL_ACTIVITIES,
 } from "../data/seed";
 import { useAuth } from "./auth-context";
 
@@ -11,24 +12,30 @@ const DataContext = createContext(null);
 const PRODUCTS_STORAGE_KEY = "ihuza-products";
 const CATEGORIES_STORAGE_KEY = "ihuza-categories";
 const USERS_STORAGE_KEY = "ihuza-users";
+const ACTIVITIES_STORAGE_KEY = "ihuza-activities";
 
 export function DataProvider({ children }) {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [activities, setActivities] = useState([]);
   const [users, setUsers] = useState([]);
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
 
   // init data from local
   useEffect(() => {
     const storedProducts = localStorage.getItem(PRODUCTS_STORAGE_KEY);
     const storedCategories = localStorage.getItem(CATEGORIES_STORAGE_KEY);
     const storedUsers = localStorage.getItem(USERS_STORAGE_KEY);
+    const storedActivities = localStorage.getItem(ACTIVITIES_STORAGE_KEY);
 
     setProducts(storedProducts ? JSON.parse(storedProducts) : INITIAL_PRODUCTS);
     setCategories(
       storedCategories ? JSON.parse(storedCategories) : INITIAL_CATEGORIES
     );
     setUsers(storedUsers ? JSON.parse(storedUsers) : INITIAL_USERS);
+    setActivities(
+      storedActivities ? JSON.parse(storedActivities) : INITIAL_ACTIVITIES
+    );
   }, []);
 
   useEffect(() => {
@@ -49,6 +56,23 @@ export function DataProvider({ children }) {
     }
   }, [users]);
 
+  useEffect(() => {
+    if (activities.length > 0) {
+      localStorage.setItem(ACTIVITIES_STORAGE_KEY, JSON.stringify(activities));
+    }
+  }, [activities]);
+
+  function recordActivity(activity) {
+    // activity: { type: "add", itemId: "2", doneBy: "user1" }
+    const newActivity = {
+      ...activity,
+      id: String(Date.now()),
+      createdAt: new Date().toISOString(),
+      doneBy: user.email,
+    };
+    setActivities((prev) => [newActivity, ...prev]);
+  }
+
   const addProduct = (product) => {
     const existingProduct = products.find(
       (p) => p.name.toLowerCase() === product.name.toLowerCase()
@@ -63,6 +87,10 @@ export function DataProvider({ children }) {
       createdAt: new Date().toISOString(),
       createdBy: user.email,
     };
+    recordActivity({
+      type: "product-add",
+      itemId: newProduct.id,
+    });
 
     setProducts((prev) => [newProduct, ...prev]);
     return { data: newProduct };
@@ -73,9 +101,13 @@ export function DataProvider({ children }) {
     if (!existingProduct) {
       return { error: "Product not found" };
     }
-    if (user.role !== "Admin" && user.email !== existingProduct.createdBy) {
+    if (!isAdmin && user.email !== existingProduct.createdBy) {
       return { error: "Unauthorized" };
     }
+    recordActivity({
+      type: "product-update",
+      itemId: id,
+    });
     setProducts((prev) =>
       prev.map((p) => (p.id === id ? { ...p, ...updates } : p))
     );
@@ -87,9 +119,13 @@ export function DataProvider({ children }) {
     if (!existingProduct) {
       return { error: "Product not found" };
     }
-    if (user.role !== "Admin" && user.email !== existingProduct.createdBy) {
+    if (!isAdmin && user.email !== existingProduct.createdBy) {
       return { error: "Unauthorized" };
     }
+    recordActivity({
+      type: "product-delete",
+      itemId: id,
+    });
     setProducts((prev) => prev.filter((p) => p.id !== id));
     return { data: "success" };
   };
@@ -103,7 +139,7 @@ export function DataProvider({ children }) {
   };
 
   const addCategory = (category) => {
-    if (user.role !== "Admin") {
+    if (!isAdmin) {
       return { error: "Unauthorized" };
     }
 
@@ -119,6 +155,10 @@ export function DataProvider({ children }) {
       id: String(Date.now()),
       createdAt: new Date().toISOString(),
     };
+    recordActivity({
+      type: "category-add",
+      itemId: newCategory.id,
+    });
     setCategories((prev) => [newCategory, ...prev]);
     return { data: newCategory };
   };
@@ -128,9 +168,13 @@ export function DataProvider({ children }) {
     if (!existingCategory) {
       return { error: "Category not found" };
     }
-    if (user.role !== "Admin") {
+    if (!isAdmin) {
       return { error: "Unauthorized" };
     }
+    recordActivity({
+      type: "category-update",
+      itemId: id,
+    });
     setCategories((prev) =>
       prev.map((c) => (c.id === id ? { ...c, ...updates } : c))
     );
@@ -142,9 +186,13 @@ export function DataProvider({ children }) {
     if (!existingCategory) {
       return { error: "Category not found" };
     }
-    if (user.role !== "Admin") {
+    if (!isAdmin) {
       return { error: "Unauthorized" };
     }
+    recordActivity({
+      type: "category-delete",
+      itemId: id,
+    });
     setCategories((prev) => prev.filter((c) => c.id !== id));
     return { data: "success" };
   };
@@ -180,6 +228,10 @@ export function DataProvider({ children }) {
       createdAt: new Date().toISOString(),
       lastLogin: undefined,
     };
+    recordActivity({
+      type: "user-add",
+      itemId: newUser.id,
+    });
     setUsers((prev) => [newUser, ...prev]);
     return { data: newUser };
   };
@@ -189,9 +241,13 @@ export function DataProvider({ children }) {
     if (!existingUser) {
       return { error: "User not found" };
     }
-    if (user.role !== "Admin" && user.email !== existingUser.email) {
+    if (!isAdmin && user.email !== existingUser.email) {
       return { error: "Unauthorized" };
     }
+    recordActivity({
+      type: "user-update",
+      itemId: id,
+    });
     setUsers((prev) =>
       prev.map((u) => (u.id === id ? { ...u, ...updates } : u))
     );
@@ -203,9 +259,13 @@ export function DataProvider({ children }) {
     if (!existingUser) {
       return { error: "User not found" };
     }
-    if (user.role !== "Admin" && user.email !== existingUser.email) {
+    if (!isAdmin && user.email !== existingUser.email) {
       return { error: "Unauthorized" };
     }
+    recordActivity({
+      type: "user-delete",
+      itemId: id,
+    });
     setUsers((prev) => prev.filter((u) => u.id !== id));
     return { data: "success" };
   };
@@ -262,6 +322,8 @@ export function DataProvider({ children }) {
         updateUser,
         deleteUser,
         getUserById,
+        // activities
+        activities,
         // stats
         getStats,
       }}

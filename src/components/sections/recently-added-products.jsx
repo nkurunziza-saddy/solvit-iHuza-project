@@ -1,7 +1,7 @@
 import { Card } from "../base/card";
-import { ProductCard } from "../product-card";
 import { useData } from "../../contexts/data-context";
-import { checkQuantityStatus } from "../../utils";
+import { checkQuantityStatus, cn } from "../../utils";
+import { Badge } from "../base/badge";
 
 export const RecentlyAddedProducts = () => {
   const { products, getCategoryById } = useData();
@@ -22,15 +22,30 @@ export const RecentlyAddedProducts = () => {
         </p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {recentProducts.map((product) => (
-            <ProductCard
-              key={product.id}
-              name={product.name}
-              status={checkQuantityStatus(product.quantity)}
-              category={getCategoryById(product.categoryId).name}
-              date={product.createdAt?.split("T")[0]}
-            />
-          ))}
+          {recentProducts.map((product) => {
+            const category = getCategoryById(product.categoryId).data;
+            return (
+              <div
+                className={cn(
+                  "bg-background rounded-lg shadow-sm border p-4 hover:shadow-md transition-shadow"
+                )}
+                key={product.id}
+              >
+                <div className="flex justify-between items-start mb-1">
+                  <h5 className="font-medium text-foreground text-sm">
+                    {product.name}
+                  </h5>
+                  <Badge text={checkQuantityStatus(product.quantity)} />
+                </div>
+                <div className="flex flex-col text-muted-foreground">
+                  <p className="text-sm">{category?.name}</p>
+                  <p className="text-xs mt-1 text-muted-foreground/85">
+                    {product.createdAt?.split("T")[0]}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
         </div>
       )}
     </Card>
