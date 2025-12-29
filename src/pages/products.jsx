@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus, Search, Edit2, Trash2, BoxIcon } from "lucide-react";
+import { Plus, Search, BoxIcon } from "lucide-react";
 import { useData } from "../contexts/data-context";
 import { SimpleCard } from "../components/base/card";
 import { Button } from "../components/base/button";

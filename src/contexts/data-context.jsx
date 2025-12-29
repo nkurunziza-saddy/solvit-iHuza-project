@@ -279,13 +279,21 @@ export function DataProvider({ children }) {
   };
 
   // stats
-  const getStats = () => {
-    const totalProducts = products.length;
+  const getStats = (userEmail = null) => {
+    const filteredProducts = userEmail
+      ? products.filter((p) => p.createdBy === userEmail)
+      : products;
+
+    const totalProducts = filteredProducts.length;
     const totalCategories = categories.length;
     const totalUsers = users.length;
-    const lowStockProducts = products.filter((p) => p.quantity <= 10).length;
-    const outOfStockProducts = products.filter((p) => p.quantity <= 0).length;
-    const totalValue = products.reduce(
+    const lowStockProducts = filteredProducts.filter(
+      (p) => p.quantity <= 10
+    ).length;
+    const outOfStockProducts = filteredProducts.filter(
+      (p) => p.quantity <= 0
+    ).length;
+    const totalValue = filteredProducts.reduce(
       (sum, p) => sum + p.price * p.quantity,
       0
     );

@@ -1,12 +1,18 @@
 import { Card } from "../base/card";
 import { useData } from "../../contexts/data-context";
+import { useAuth } from "../../contexts/auth-context";
 import { checkQuantityStatus, cn } from "../../utils";
 import { Badge } from "../base/badge";
 
 export const RecentlyAddedProducts = () => {
+  const { isAdmin, user } = useAuth();
   const { products, getCategoryById } = useData();
 
-  const recentProducts = [...products]
+  const filteredProducts = isAdmin
+    ? products
+    : products.filter((p) => p.createdBy === user?.email);
+
+  const recentProducts = [...filteredProducts]
     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
     .slice(0, 6);
 

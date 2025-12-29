@@ -12,16 +12,16 @@ import { ErrorBoundary } from "./components/error-boundary.jsx";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
-      <ErrorBoundary>
-        <ThemeProvider>
-          <AuthProvider>
+      <AuthProvider>
+        <ErrorBoundary>
+          <ThemeProvider>
             <DataProvider>
               <App />
               <Toaster />
             </DataProvider>
-          </AuthProvider>
-        </ThemeProvider>
-      </ErrorBoundary>
+          </ThemeProvider>
+        </ErrorBoundary>
+      </AuthProvider>
     </BrowserRouter>
   </StrictMode>
 );

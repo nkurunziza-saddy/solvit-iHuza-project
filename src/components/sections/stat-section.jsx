@@ -1,14 +1,16 @@
 import { BoxIcon, Layers, AlertTriangleIcon, UserIcon } from "lucide-react";
 import { useData } from "../../contexts/data-context";
+import { useAuth } from "../../contexts/auth-context";
 import { cn } from "../../utils";
 import { IconCard } from "../icon-card";
 
 export const StatSection = () => {
+  const { isAdmin, user } = useAuth();
   const { getStats } = useData();
-  const stats = getStats();
+  const stats = getStats(isAdmin ? null : user?.email);
 
   const statItems = [
-    {
+    isAdmin && {
       label: "Total Users",
       value: String(stats.totalUsers),
       icon: UserIcon,
@@ -32,7 +34,7 @@ export const StatSection = () => {
       icon: AlertTriangleIcon,
       variant: "warning",
     },
-  ];
+  ].filter(Boolean);
 
   return (
     <div className="grid gap-4 md:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">

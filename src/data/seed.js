@@ -167,7 +167,6 @@ export const INITIAL_PRODUCTS = [
   },
 ];
 export const INITIAL_ACTIVITIES = [
-  // Product additions
   {
     id: "act-1",
     type: "product-add",
@@ -203,7 +202,6 @@ export const INITIAL_ACTIVITIES = [
     doneBy: "admin@ihuza.com",
     createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
   },
-  // Category additions
   {
     id: "act-6",
     type: "category-add",
@@ -225,7 +223,6 @@ export const INITIAL_ACTIVITIES = [
     doneBy: "admin@ihuza.com",
     createdAt: new Date(Date.now() - 50 * 24 * 60 * 60 * 1000).toISOString(),
   },
-  // User registrations
   {
     id: "act-9",
     type: "user-add",

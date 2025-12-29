@@ -2,6 +2,7 @@ import { BellIcon, MenuIcon, MoonIcon, SunIcon, UserIcon } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import { useTheme } from "../../contexts/theme-context";
 import { useAuth } from "../../contexts/auth-context";
+import { Settings } from "lucide-react";
 
 const pageTitles = {
   "/dashboard": "Dashboard",
@@ -53,6 +54,7 @@ export const Navbar = ({ onMenuClick }) => {
             <SunIcon className="size-4 md:size-5 text-muted-foreground hover:text-foreground transition-colors" />
           )}
         </button>
+        <Settings className="size-4 md:size-5 cursor-pointer text-muted-foreground hover:text-foreground transition-colors" />
         <div className="relative">
           <BellIcon className="size-4 md:size-5 cursor-pointer text-muted-foreground hover:text-foreground transition-colors" />
           <span className="absolute -top-1 -right-1 size-2 bg-destructive rounded-full"></span>

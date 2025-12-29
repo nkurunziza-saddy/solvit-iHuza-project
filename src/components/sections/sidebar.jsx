@@ -7,9 +7,9 @@ import { Badge } from "../base/badge";
 import { useData } from "../../contexts/data-context";
 
 export const Sidebar = () => {
-  const { isAdmin, logout } = useAuth();
+  const { isAdmin, logout, user } = useAuth();
   const { getStats } = useData();
-  const stats = getStats();
+  const stats = getStats(isAdmin ? null : user?.email);
   const navigate = useNavigate();
 
   const getNavItems = (isAdmin) =>
@@ -125,9 +125,10 @@ export const Sidebar = () => {
 };
 
 export function MobileSidebar({ open, setOpen }) {
-  const { isAdmin, logout } = useAuth();
+  const { isAdmin, logout, user } = useAuth();
   const { getStats } = useData();
-  const stats = getStats();
+  // For non-admin users, filter stats to show only their products
+  const stats = getStats(isAdmin ? null : user?.email);
   const navigate = useNavigate();
 
   const getNavItems = (isAdmin) =>

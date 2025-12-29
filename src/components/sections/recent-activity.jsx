@@ -14,6 +14,7 @@ import {
 import { IconCard } from "../icon-card";
 import { cn } from "../../utils";
 import { useData } from "../../contexts/data-context";
+import { useAuth } from "../../contexts/auth-context";
 
 const activityConfig = {
   "product-add": {
@@ -67,8 +68,13 @@ const variantMap = {
 };
 
 export const RecentActivity = () => {
+  const { isAdmin, user } = useAuth();
   const { activities, getProductById, getCategoryById, getUserById } =
     useData();
+
+  const filteredActivities = isAdmin
+    ? activities
+    : activities.filter((a) => a.doneBy === user?.email);
 
   const getItemName = (activity) => {
     try {
@@ -89,7 +95,7 @@ export const RecentActivity = () => {
     return "Unknown item";
   };
 
-  const recentActivities = activities.slice(0, 4).map((activity) => {
+  const recentActivities = filteredActivities.slice(0, 4).map((activity) => {
     const config = activityConfig[activity.type] || {
       label: "Unknown activity",
       icon: Activity,
